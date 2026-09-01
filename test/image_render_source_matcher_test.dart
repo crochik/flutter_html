@@ -144,8 +144,9 @@ void main() {
     //TODO replace when ImageMatcherExtension is written
     matcher(ExtensionContext context) {
       return context.elementName == "img" &&
-          ImageBuiltIn.dataUriFormat
-                  .firstMatch(context.attributes['src'] ?? "") !=
+          ImageBuiltIn.dataUriFormat.firstMatch(
+                context.attributes['src'] ?? "",
+              ) !=
               null;
     }
 

@@ -4,11 +4,7 @@ import './test_utils.dart';
 
 void main() {
   group("custom image data uri tests:", () {
-    String makeImgTag({
-      String? src,
-      int? width,
-      int? height,
-    }) {
+    String makeImgTag({String? src, int? width, int? height}) {
       String srcAttr = src != null ? 'src="$src"' : '';
       String widthAttr = width != null ? 'width=$width' : '';
       String heightAttr = height != null ? 'height=$height' : '';
@@ -22,10 +18,11 @@ void main() {
     testMatchAndRender(
       "matches and renders image/svg+xml with text encoding",
       makeImgTag(
-          src: 'data:image/svg+xml,$svgEncoded', width: 100, height: 100),
-      const SvgHtmlExtension(
-        dataEncoding: null,
+        src: 'data:image/svg+xml,$svgEncoded',
+        width: 100,
+        height: 100,
       ),
+      const SvgHtmlExtension(dataEncoding: null),
       TestResult.matchAndRenderSvgPicture,
     );
 
@@ -47,8 +44,9 @@ void main() {
     testMatchAndRender(
       "does not match base64 image data uri",
       makeImgTag(
-          src:
-              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='),
+        src:
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==',
+      ),
       const SvgHtmlExtension(),
       TestResult.noMatch,
     );

@@ -11,9 +11,7 @@ import 'package:html/dom.dart' as dom;
 class AudioHtmlExtension extends HtmlExtension {
   final AudioControllerCallback? audioControllerCallback;
 
-  const AudioHtmlExtension({
-    this.audioControllerCallback,
-  });
+  const AudioHtmlExtension({this.audioControllerCallback});
 
   @override
   Set<String> get supportedTags => {"audio"};
@@ -21,26 +19,20 @@ class AudioHtmlExtension extends HtmlExtension {
   @override
   InlineSpan build(ExtensionContext context) {
     return WidgetSpan(
-        child: AudioWidget(
-      context: context,
-      callback: audioControllerCallback,
-    ));
+      child: AudioWidget(context: context, callback: audioControllerCallback),
+    );
   }
 }
 
-typedef AudioControllerCallback = void Function(
-    dom.Element?, ChewieAudioController, VideoPlayerController);
+typedef AudioControllerCallback =
+    void Function(dom.Element?, ChewieAudioController, VideoPlayerController);
 
 /// A widget used for rendering an audio player in the HTML tree
 class AudioWidget extends StatefulWidget {
   final ExtensionContext context;
   final AudioControllerCallback? callback;
 
-  const AudioWidget({
-    super.key,
-    required this.context,
-    this.callback,
-  });
+  const AudioWidget({super.key, required this.context, this.callback});
 
   @override
   State<StatefulWidget> createState() => _AudioWidgetState();
@@ -95,9 +87,7 @@ class _AudioWidgetState extends State<AudioWidget> {
     return CssBoxWidget(
       style: widget.context.styledElement!.style,
       childIsReplaced: true,
-      child: ChewieAudio(
-        controller: chewieAudioController!,
-      ),
+      child: ChewieAudio(controller: chewieAudioController!),
     );
   }
 }

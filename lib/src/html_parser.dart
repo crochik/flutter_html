@@ -18,16 +18,15 @@ import 'package:flutter_html/src/processing/whitespace.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html_parser;
 
-typedef OnTap = void Function(
-  String? url,
-  Map<String, String> attributes,
-  html.Element? element,
-);
+typedef OnTap =
+    void Function(
+      String? url,
+      Map<String, String> attributes,
+      html.Element? element,
+    );
 
-typedef OnCssParseError = String? Function(
-  String css,
-  List<css_parser.Message> errors,
-);
+typedef OnCssParseError =
+    String? Function(String css, List<css_parser.Message> errors);
 
 class HtmlParser extends StatefulWidget {
   final html.Element htmlData;
@@ -54,8 +53,9 @@ class HtmlParser extends StatefulWidget {
     required this.doNotRenderTheseTags,
     required this.onlyRenderTheseTags,
     this.root,
-  }) : internalOnAnchorTap = onAnchorTap ??
-            (key != null ? _handleAnchorTap(key, onLinkTap) : onLinkTap);
+  }) : internalOnAnchorTap =
+           onAnchorTap ??
+           (key != null ? _handleAnchorTap(key, onLinkTap) : onLinkTap);
 
   @override
   State<HtmlParser> createState() => _HtmlParserState();
@@ -83,8 +83,10 @@ class HtmlParser extends StatefulWidget {
   static OnTap _handleAnchorTap(Key key, OnTap? onLinkTap) =>
       (String? url, Map<String, String> attributes, html.Element? element) {
         if (url?.startsWith("#") == true) {
-          final anchorContext =
-              AnchorKey.forId(key, url!.substring(1))?.currentContext;
+          final anchorContext = AnchorKey.forId(
+            key,
+            url!.substring(1),
+          )?.currentContext;
           if (anchorContext != null) {
             Scrollable.ensureVisible(anchorContext);
           }
@@ -198,8 +200,9 @@ class _HtmlParserState extends State<HtmlParser> {
       name: '[Tree Root]',
       children: [],
       node: widget.htmlData,
-      style: Style.fromTextStyle(DefaultTextStyle.of(context)
-          .style), //TODO this was Theme.of(context).textTheme.bodyText2!. Compare.
+      style: Style.fromTextStyle(
+        DefaultTextStyle.of(context).style,
+      ), //TODO this was Theme.of(context).textTheme.bodyText2!. Compare.
     );
 
     for (var node in widget.htmlData.nodes) {
@@ -288,8 +291,10 @@ class _HtmlParserState extends State<HtmlParser> {
         .getElementsByTagName("style")
         .map((e) => e.innerHtml)
         .join();
-    final styleTagDeclarations =
-        parseExternalCss(styleTagContents, widget.onCssParseError);
+    final styleTagDeclarations = parseExternalCss(
+      styleTagContents,
+      widget.onCssParseError,
+    );
 
     _styleTreeRecursive(tree, styleTagDeclarations);
   }
@@ -305,8 +310,10 @@ class _HtmlParserState extends State<HtmlParser> {
 
     // Apply inline styles
     if (tree.attributes.containsKey("style")) {
-      final newStyle =
-          inlineCssToStyle(tree.attributes['style'], widget.onCssParseError);
+      final newStyle = inlineCssToStyle(
+        tree.attributes['style'],
+        widget.onCssParseError,
+      );
       if (newStyle != null) {
         tree.style = tree.style.merge(newStyle);
       }
@@ -381,9 +388,11 @@ class _HtmlParserState extends State<HtmlParser> {
   InlineSpan _buildTreeRecursive(StyledElement tree) {
     // Generate a function that allows children to be built lazily
     Map<StyledElement, InlineSpan> buildChildren() {
-      return Map.fromEntries(tree.children.map((child) {
-        return MapEntry(child, _buildTreeRecursive(child));
-      }));
+      return Map.fromEntries(
+        tree.children.map((child) {
+          return MapEntry(child, _buildTreeRecursive(child));
+        }),
+      );
     }
 
     // Set the extension context for this node.

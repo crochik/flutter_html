@@ -10,15 +10,13 @@ class RubyBuiltIn extends HtmlExtension {
   const RubyBuiltIn();
 
   @override
-  Set<String> get supportedTags => {
-        "rp",
-        "rt",
-        "ruby",
-      };
+  Set<String> get supportedTags => {"rp", "rt", "ruby"};
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     if (context.elementName == "ruby") {
       return RubyElement(
         element: context.node as dom.Element,
@@ -42,7 +40,8 @@ class RubyBuiltIn extends HtmlExtension {
   InlineSpan build(ExtensionContext context) {
     StyledElement? node;
     List<Widget> widgets = <Widget>[];
-    final rubySize = context.parser.style['rt']?.fontSize?.value ??
+    final rubySize =
+        context.parser.style['rt']?.fontSize?.value ??
         max(9.0, context.styledElement!.style.fontSize!.value / 2);
     final rubyYPos = rubySize + rubySize / 2;
     List<StyledElement> children = [];
@@ -70,9 +69,9 @@ class RubyBuiltIn extends HtmlExtension {
                     style: c.style,
                     child: Text(
                       c.element!.innerHtml,
-                      style: c.style
-                          .generateTextStyle()
-                          .copyWith(fontSize: rubySize),
+                      style: c.style.generateTextStyle().copyWith(
+                        fontSize: rubySize,
+                      ),
                     ),
                   ),
                 ),
@@ -86,9 +85,8 @@ class RubyBuiltIn extends HtmlExtension {
                       style: context.styledElement!.style.generateTextStyle(),
                     )
                   : RichText(
-                      text: const TextSpan(
-                          text:
-                              '!rc!')), // TODO was context.parser.parseTree(context, node)),
+                      text: const TextSpan(text: '!rc!'),
+                    ), // TODO was context.parser.parseTree(context, node)),
             ),
           ],
         );

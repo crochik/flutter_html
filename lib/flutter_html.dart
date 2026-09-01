@@ -59,9 +59,9 @@ class Html extends StatefulWidget {
     this.onlyRenderTheseTags,
     this.doNotRenderTheseTags,
     this.style = const {},
-  })  : documentElement = null,
-        assert(data != null),
-        _anchorKey = anchorKey ?? GlobalKey();
+  }) : documentElement = null,
+       assert(data != null),
+       _anchorKey = anchorKey ?? GlobalKey();
 
   Html.fromDom({
     super.key,
@@ -75,10 +75,10 @@ class Html extends StatefulWidget {
     this.doNotRenderTheseTags,
     this.onlyRenderTheseTags,
     this.style = const {},
-  })  : data = null,
-        assert(document != null),
-        documentElement = document!.documentElement,
-        _anchorKey = anchorKey ?? GlobalKey();
+  }) : data = null,
+       assert(document != null),
+       documentElement = document!.documentElement,
+       _anchorKey = anchorKey ?? GlobalKey();
 
   Html.fromElement({
     super.key,
@@ -92,9 +92,9 @@ class Html extends StatefulWidget {
     this.doNotRenderTheseTags,
     this.onlyRenderTheseTags,
     this.style = const {},
-  })  : data = null,
-        assert(documentElement != null),
-        _anchorKey = anchorKey ?? GlobalKey();
+  }) : data = null,
+       assert(documentElement != null),
+       _anchorKey = anchorKey ?? GlobalKey();
 
   /// A unique key for this Html widget to ensure uniqueness of anchors
   final GlobalKey _anchorKey;

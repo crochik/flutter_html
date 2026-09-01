@@ -7,11 +7,7 @@ import '../test_utils.dart';
 void main() {
   testWidgets('<a> test', (WidgetTester tester) async {
     await tester.pumpWidget(
-      TestApp(
-        child: Html(
-          data: """<a>Hello, world!</a>""",
-        ),
-      ),
+      TestApp(child: Html(data: """<a>Hello, world!</a>""")),
     );
     expect(find.text("Hello, world!", findRichText: true), findsOneWidget);
   });
@@ -51,7 +47,7 @@ void main() {
       TestApp(
         child: Html(
           data: """<a href="https://example.com">Hello, world!</a>""",
-          onLinkTap: (url, _, __) {
+          onLinkTap: (url, _, _) {
             tappedUrl = url ?? "";
           },
         ),
@@ -71,7 +67,7 @@ void main() {
       TestApp(
         child: Html(
           data: """<a href="https://example.com"><icon></icon></a>""",
-          onLinkTap: (url, _, __) {
+          onLinkTap: (url, _, _) {
             tappedUrl = url ?? "";
           },
           extensions: [

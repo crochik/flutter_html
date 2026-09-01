@@ -12,6 +12,7 @@ class IframeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-        "Iframes are currently not supported in this environment");
+      "Iframes are currently not supported in this environment",
+    );
   }
 }

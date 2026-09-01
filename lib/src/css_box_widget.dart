@@ -80,8 +80,9 @@ class CssBoxWidget extends StatelessWidget {
           child: top
               ? child
               : MediaQuery(
-                  data: MediaQuery.of(context)
-                      .copyWith(textScaler: TextScaler.linear(1.0)),
+                  data: MediaQuery.of(
+                    context,
+                  ).copyWith(textScaler: TextScaler.linear(1.0)),
                   child: child,
                 ),
         ),
@@ -107,10 +108,7 @@ class CssBoxWidget extends StatelessWidget {
     }
 
     return Text.rich(
-      TextSpan(
-        style: style.generateTextStyle(),
-        children: children,
-      ),
+      TextSpan(style: style.generateTextStyle(), children: children),
       textAlign: style.textAlign ?? TextAlign.start,
       textDirection: style.direction,
       maxLines: style.maxLines,
@@ -126,7 +124,7 @@ class CssBoxWidget extends StatelessWidget {
           alignment: PlaceholderAlignment.middle,
           child: Image.network(
             style.listStyleImage!.uriText,
-            errorBuilder: (_, __, ___) {
+            errorBuilder: (_, _, _) {
               if (style.marker?.content.replacementContent?.isNotEmpty ??
                   false) {
                 return Text.rich(
@@ -156,7 +154,9 @@ class CssBoxWidget extends StatelessWidget {
   }
 
   TextDirection _checkTextDirection(
-      BuildContext context, TextDirection? direction) {
+    BuildContext context,
+    TextDirection? direction,
+  ) {
     final textDirection = direction ?? Directionality.maybeOf(context);
 
     assert(
@@ -299,7 +299,6 @@ class _CSSBoxRenderer extends MultiChildRenderObjectWidget {
 }
 
 @visibleForTesting
-
 /// Implements the CSS layout algorithm
 class RenderCSSBox extends RenderBox
     with
@@ -315,15 +314,15 @@ class RenderCSSBox extends RenderBox
     required TextDirection textDirection,
     required bool childIsReplaced,
     required bool shrinkWrap,
-  })  : _display = display,
-        _width = width,
-        _height = height,
-        _margins = margins,
-        _borderSize = borderSize,
-        _paddingSize = paddingSize,
-        _textDirection = textDirection,
-        _childIsReplaced = childIsReplaced,
-        _shrinkWrap = shrinkWrap;
+  }) : _display = display,
+       _width = width,
+       _height = height,
+       _margins = margins,
+       _borderSize = borderSize,
+       _paddingSize = paddingSize,
+       _textDirection = textDirection,
+       _childIsReplaced = childIsReplaced,
+       _shrinkWrap = shrinkWrap;
 
   Display _display;
 
@@ -414,9 +413,10 @@ class RenderCSSBox extends RenderBox
   }
 
   static double getIntrinsicDimension(
-      RenderBox? firstChild,
-      double Function(RenderBox child) mainChildSizeGetter,
-      double marginSpaceNeeded) {
+    RenderBox? firstChild,
+    double Function(RenderBox child) mainChildSizeGetter,
+    double marginSpaceNeeded,
+  ) {
     double extent = 0.0;
     RenderBox? child = firstChild;
     while (child != null) {
@@ -427,7 +427,8 @@ class RenderCSSBox extends RenderBox
       } catch (_) {
         // See https://github.com/flutter/flutter/issues/65895
         debugPrint(
-            "Due to Flutter layout restrictions (see https://github.com/flutter/flutter/issues/65895), contents set to `vertical-align: baseline` within an intrinsically-sized layout may not display as expected. If content is cut off or displaying incorrectly, please try setting vertical-align to 'bottom' on the problematic elements");
+          "Due to Flutter layout restrictions (see https://github.com/flutter/flutter/issues/65895), contents set to `vertical-align: baseline` within an intrinsically-sized layout may not display as expected. If content is cut off or displaying incorrectly, please try setting vertical-align to 'bottom' on the problematic elements",
+        );
       }
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
@@ -486,13 +487,16 @@ class RenderCSSBox extends RenderBox
 
   @override
   double? computeDryBaseline(
-      covariant BoxConstraints constraints, TextBaseline baseline) {
+    covariant BoxConstraints constraints,
+    TextBaseline baseline,
+  ) {
     return null;
   }
 
-  _Sizes _computeSize(
-      {required BoxConstraints constraints,
-      required ChildLayouter layoutChild}) {
+  _Sizes _computeSize({
+    required BoxConstraints constraints,
+    required ChildLayouter layoutChild,
+  }) {
     if (childCount == 0) {
       return _Sizes(constraints.biggest, Size.zero);
     }
@@ -512,13 +516,13 @@ class RenderCSSBox extends RenderBox
       maxWidth: (this.width.unit != Unit.auto)
           ? this.width.value
           : containingBlockSize.width -
-              (margins.left?.value ?? 0) -
-              (margins.right?.value ?? 0),
+                (margins.left?.value ?? 0) -
+                (margins.right?.value ?? 0),
       maxHeight: (this.height.unit != Unit.auto)
           ? this.height.value
           : containingBlockSize.height -
-              (margins.top?.value ?? 0) -
-              (margins.bottom?.value ?? 0),
+                (margins.top?.value ?? 0) -
+                (margins.bottom?.value ?? 0),
       minWidth: (this.width.unit != Unit.auto) ? this.width.value : 0,
       minHeight: (this.height.unit != Unit.auto) ? this.height.value : 0,
     );
@@ -537,13 +541,15 @@ class RenderCSSBox extends RenderBox
         !shrinkWrap &&
         !childIsReplaced &&
         containingBlockSize.width.isFinite) {
-      childConstraints = childConstraints.enforce(BoxConstraints(
-        maxWidth: math.max(
-          containingBlockSize.width,
-          childConstraints.maxWidth,
+      childConstraints = childConstraints.enforce(
+        BoxConstraints(
+          maxWidth: math.max(
+            containingBlockSize.width,
+            childConstraints.maxWidth,
+          ),
+          minWidth: childConstraints.maxWidth,
         ),
-        minWidth: childConstraints.maxWidth,
-      ));
+      );
     }
     final Size childSize = layoutChild(child, childConstraints);
 
@@ -563,7 +569,8 @@ class RenderCSSBox extends RenderBox
       width = childSize.width + horizontalMargins;
       height = childSize.height + verticalMargins;
     } else if (display.isBlock) {
-      width = (shrinkWrap ||
+      width =
+          (shrinkWrap ||
               childIsReplaced ||
               containingBlockSize.width.isInfinite)
           ? childSize.width + horizontalMargins
@@ -594,8 +601,10 @@ class RenderCSSBox extends RenderBox
         child.parentData! as CSSBoxParentData;
 
     // Calculate used margins based on constraints and child size
-    final usedMargins =
-        _calculateUsedMargins(sizes.childSize, constraints.biggest);
+    final usedMargins = _calculateUsedMargins(
+      sizes.childSize,
+      constraints.biggest,
+    );
     final leftMargin = usedMargins.left?.value ?? 0;
     final topMargin = usedMargins.top?.value ?? 0;
 
@@ -627,10 +636,7 @@ class RenderCSSBox extends RenderBox
       final offsetHeight = topOffset;
       switch (_textDirection) {
         case TextDirection.rtl:
-          markerBoxParentData.offset = Offset(
-            child.size.width,
-            offsetHeight,
-          );
+          markerBoxParentData.offset = Offset(child.size.width, offsetHeight);
           break;
         case TextDirection.ltr:
           markerBoxParentData.offset = Offset(
@@ -708,11 +714,13 @@ class RenderCSSBox extends RenderBox
         widthIsAuto = false;
       } else if (!widthIsAuto && marginLeftIsAuto && !marginRightIsAuto) {
         marginLeft = Margin(
-            containingBlockSize.width - childSize.width - marginRight.value);
+          containingBlockSize.width - childSize.width - marginRight.value,
+        );
         marginLeftIsAuto = false;
       } else if (!widthIsAuto && !marginLeftIsAuto && marginRightIsAuto) {
         marginRight = Margin(
-            containingBlockSize.width - childSize.width - marginLeft.value);
+          containingBlockSize.width - childSize.width - marginLeft.value,
+        );
         marginRightIsAuto = false;
       }
 
@@ -733,8 +741,9 @@ class RenderCSSBox extends RenderBox
       //If both margin-left and margin-right are auto, their used values are equal.
       // This horizontally centers the element within the containing block.
       if (marginLeftIsAuto && marginRightIsAuto) {
-        final newMargin =
-            Margin((containingBlockSize.width - childSize.width) / 2);
+        final newMargin = Margin(
+          (containingBlockSize.width - childSize.width) / 2,
+        );
         marginLeft = newMargin;
         marginRight = newMargin;
         marginLeftIsAuto = false;
@@ -819,8 +828,9 @@ extension Normalize on Dimension {
 
 double _calculateEmValue(Style style, BuildContext buildContext) {
   return (style.fontSize?.emValue ?? 16) *
-      (MediaQuery.maybeTextScalerOf(buildContext)
-              ?.scale(style.fontSize?.emValue ?? 16) ??
+      (MediaQuery.maybeTextScalerOf(
+            buildContext,
+          )?.scale(style.fontSize?.emValue ?? 16) ??
           1.0) *
       MediaQuery.of(buildContext).devicePixelRatio;
 }

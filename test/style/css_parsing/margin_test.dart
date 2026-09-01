@@ -8,345 +8,299 @@ import '../../test_utils.dart';
 // the `div` to prevent its margins from collapsing into its parent's margins.
 
 void main() {
-  testWidgets(
-    'Test that a normal div has no margin',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: "<div>Test</div>",
-          ),
+  testWidgets('Test that a normal div has no margin', (tester) async {
+    await tester.pumpWidget(TestApp(child: Html(data: "<div>Test</div>")));
+    expect(_getMargin("Test"), equals(Margins.zero));
+  });
+
+  testWidgets('Test that a div with inline styled margin has margin', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data:
+              """<span>...</span><div style="margin: 8px;">Test</div><span>...</span>""",
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.zero));
-    },
-  );
+      ),
+    );
 
-  testWidgets(
-    'Test that a div with inline styled margin has margin',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data:
-                """<span>...</span><div style="margin: 8px;">Test</div><span>...</span>""",
-          ),
-        ),
-      );
+    // Top and bottom margins will be merged with parent margins due to margin collapsing
+    expect(_getMargin("Test"), equals(Margins.all(8, Unit.px)));
+  });
 
-      // Top and bottom margins will be merged with parent margins due to margin collapsing
-      expect(_getMargin("Test"), equals(Margins.all(8, Unit.px)));
-    },
-  );
-
-  testWidgets(
-    'Test that a div with styled margin has margin',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test that a div with styled margin has margin', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.all(8, Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.all(8, Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-left in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-left in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-left: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(left: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(left: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-top in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-top in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-top: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(top: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(top: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-right in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-right in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-right: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(right: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(right: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-bottom in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-bottom in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-bottom: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(
-          _getMargin("Test"), equals(Margins.only(bottom: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(bottom: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-block-start in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-block-start in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-block-start: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(top: 8, blockStart: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(top: 8, blockStart: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-block-end in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-block-end in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-block-end: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(
-          _getMargin("Test"), equals(Margins.only(blockEnd: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(blockEnd: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-inline-start in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-inline-start in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-inline-start: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(inlineStart: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(inlineStart: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-inline-end in <style>',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-inline-end in <style>', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <style>div {margin-inline-end: 8px;}</style>
             <span>...</span><div>Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(inlineEnd: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(inlineEnd: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-left inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-left inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-left: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(left: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(left: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-top inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-top inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-top: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(top: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(top: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-right inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-right inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-right: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"), equals(Margins.only(right: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(right: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-bottom inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-bottom inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-bottom: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(
-          _getMargin("Test"), equals(Margins.only(bottom: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(_getMargin("Test"), equals(Margins.only(bottom: 8, unit: Unit.px)));
+  });
 
-  testWidgets(
-    'Test margin-block-start inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-block-start inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-block-start: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(top: 8, blockStart: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(top: 8, blockStart: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-block-end inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-block-end inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-block-end: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(
-          _getMargin("Test"), equals(Margins.only(blockEnd: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(blockEnd: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-inline-start inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-inline-start inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-inline-start: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(inlineStart: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(inlineStart: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test margin-inline-end inline',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test margin-inline-end inline', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-inline-end: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
-      expect(_getMargin("Test"),
-          equals(Margins.only(inlineEnd: 8, unit: Unit.px)));
-    },
-  );
+      ),
+    );
+    expect(
+      _getMargin("Test"),
+      equals(Margins.only(inlineEnd: 8, unit: Unit.px)),
+    );
+  });
 
-  testWidgets(
-    'Test that margin actually applies to visual layout',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test that margin actually applies to visual layout', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin: 8px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
+      ),
+    );
 
-      expect(_getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.all(8)));
-    },
-  );
+    expect(
+      _getDeepestRenderCSSBox("Test", tester).margins,
+      equals(Margins.all(8)),
+    );
+  });
 
   testWidgets(
     'Test that two-argument margin actually applies to visual layout',
@@ -362,11 +316,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.symmetric(
-            vertical: 4,
-            horizontal: 8,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.symmetric(vertical: 4, horizontal: 8)),
+      );
     },
   );
 
@@ -384,13 +336,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            top: 4,
-            right: 6,
-            left: 6,
-            bottom: 8,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(top: 4, right: 6, left: 6, bottom: 8)),
+      );
     },
   );
 
@@ -408,13 +356,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            top: 2,
-            right: 4,
-            bottom: 6,
-            left: 8,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(top: 2, right: 4, bottom: 6, left: 8)),
+      );
     },
   );
 
@@ -432,33 +376,30 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            top: 2,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(top: 2)),
+      );
     },
   );
 
-  testWidgets(
-    'Test that margin-block-end applies correctly to visual layout',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Test that margin-block-end applies correctly to visual layout', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>...</span><div style="margin-block-end: 2px;">Test</div><span>...</span>
             """,
-          ),
         ),
-      );
+      ),
+    );
 
-      expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            bottom: 2,
-          )));
-    },
-  );
+    expect(
+      _getDeepestRenderCSSBox("Test", tester).margins,
+      equals(Margins.only(bottom: 2)),
+    );
+  });
 
   testWidgets(
     'Test that two-argument margin-block applies correctly to visual layout',
@@ -474,11 +415,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            top: 2,
-            bottom: 4,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(top: 2, bottom: 4)),
+      );
     },
   );
 
@@ -499,10 +438,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            left: 2,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(left: 2)),
+      );
     },
   );
 
@@ -523,10 +461,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            right: 2,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(right: 2)),
+      );
     },
   );
 
@@ -547,11 +484,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            left: 2,
-            right: 4,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(left: 2, right: 4)),
+      );
     },
   );
 
@@ -572,10 +507,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            right: 2,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(right: 2)),
+      );
     },
   );
 
@@ -596,10 +530,9 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            left: 2,
-          )));
+        _getDeepestRenderCSSBox("Test", tester).margins,
+        equals(Margins.only(left: 2)),
+      );
     },
   );
 
@@ -620,81 +553,70 @@ void main() {
       );
 
       expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.only(
-            right: 2,
-            left: 4,
-          )));
-    },
-  );
-
-  testWidgets(
-    'Test that em margin applies correctly',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: DefaultTextStyle(
-            style: const TextStyle(fontSize: 14),
-            child: Html(
-              data: """
-              <span>...</span><div style="margin: 1em 2em; font-size: 14px;">Test</div><span>...</span>
-              """,
-            ),
-          ),
-        ),
-      );
-
-      expect(
-          _getDeepestRenderCSSBox("Test", tester).margins,
-          equals(Margins.symmetric(
-            vertical: 14,
-            horizontal: 28,
-          )));
-    },
-  );
-
-  testWidgets(
-    'Test that rem margin applies correctly',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: DefaultTextStyle(
-            style: const TextStyle(fontSize: 14),
-            child: Html(
-              data: """
-              <span>...</span><div style="margin-left: 2rem;">Test</div><span>...</span>
-              """,
-            ),
-          ),
-        ),
-      );
-
-      expect(
         _getDeepestRenderCSSBox("Test", tester).margins,
-        equals(Margins.only(left: 28)),
+        equals(Margins.only(right: 2, left: 4)),
       );
     },
   );
 
-  testWidgets(
-    'Test that dimensionless margin applies correctly',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
+  testWidgets('Test that em margin applies correctly', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: DefaultTextStyle(
+          style: const TextStyle(fontSize: 14),
           child: Html(
             data: """
-            <span>...</span><div style="margin-right: 12;">Test</div><span>...</span>
-            """,
+              <span>...</span><div style="margin: 1em 2em; font-size: 14px;">Test</div><span>...</span>
+              """,
           ),
         ),
-      );
+      ),
+    );
 
-      expect(
-        _getDeepestRenderCSSBox("Test", tester).margins,
-        equals(Margins.only(right: 12)),
-      );
-    },
-  );
+    expect(
+      _getDeepestRenderCSSBox("Test", tester).margins,
+      equals(Margins.symmetric(vertical: 14, horizontal: 28)),
+    );
+  });
+
+  testWidgets('Test that rem margin applies correctly', (tester) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: DefaultTextStyle(
+          style: const TextStyle(fontSize: 14),
+          child: Html(
+            data: """
+              <span>...</span><div style="margin-left: 2rem;">Test</div><span>...</span>
+              """,
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      _getDeepestRenderCSSBox("Test", tester).margins,
+      equals(Margins.only(left: 28)),
+    );
+  });
+
+  testWidgets('Test that dimensionless margin applies correctly', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
+            <span>...</span><div style="margin-right: 12;">Test</div><span>...</span>
+            """,
+        ),
+      ),
+    );
+
+    expect(
+      _getDeepestRenderCSSBox("Test", tester).margins,
+      equals(Margins.only(right: 12)),
+    );
+  });
 }
 
 Margins? _getMargin(String textToFind) {
@@ -707,6 +629,7 @@ RenderCSSBox _getDeepestRenderCSSBox(String textToFind, WidgetTester tester) {
   );
 
   return objects.lastWhere((e) {
-    return e is RenderCSSBox;
-  }) as RenderCSSBox;
+        return e is RenderCSSBox;
+      })
+      as RenderCSSBox;
 }

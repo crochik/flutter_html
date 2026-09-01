@@ -13,78 +13,80 @@ class StyledElementBuiltIn extends HtmlExtension {
 
   @override
   Set<String> get supportedTags => {
-        "a",
-        "abbr",
-        "acronym",
-        "address",
-        "b",
-        "bdi",
-        "bdo",
-        "big",
-        "cite",
-        "code",
-        "data",
-        "del",
-        "dfn",
-        "em",
-        "font",
-        "i",
-        "ins",
-        "kbd",
-        "mark",
-        "q",
-        "rt",
-        "s",
-        "samp",
-        "small",
-        "span",
-        "strike",
-        "strong",
-        "sub",
-        "sup",
-        "time",
-        "tt",
-        "u",
-        "var",
-        "wbr",
+    "a",
+    "abbr",
+    "acronym",
+    "address",
+    "b",
+    "bdi",
+    "bdo",
+    "big",
+    "cite",
+    "code",
+    "data",
+    "del",
+    "dfn",
+    "em",
+    "font",
+    "i",
+    "ins",
+    "kbd",
+    "mark",
+    "q",
+    "rt",
+    "s",
+    "samp",
+    "small",
+    "span",
+    "strike",
+    "strong",
+    "sub",
+    "sup",
+    "time",
+    "tt",
+    "u",
+    "var",
+    "wbr",
 
-        //BLOCK ELEMENTS
-        "article",
-        "aside",
-        "blockquote",
-        "body",
-        "center",
-        "dd",
-        "div",
-        "dl",
-        "dt",
-        "figcaption",
-        "figure",
-        "footer",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "header",
-        "hr",
-        "html",
-        "li",
-        "main",
-        "nav",
-        "noscript",
-        "ol",
-        "p",
-        "pre",
-        "section",
-        "summary",
-        "ul",
-      };
+    //BLOCK ELEMENTS
+    "article",
+    "aside",
+    "blockquote",
+    "body",
+    "center",
+    "dd",
+    "div",
+    "dl",
+    "dt",
+    "figcaption",
+    "figure",
+    "footer",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "header",
+    "hr",
+    "html",
+    "li",
+    "main",
+    "nav",
+    "noscript",
+    "ol",
+    "p",
+    "pre",
+    "section",
+    "summary",
+    "ul",
+  };
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     StyledElement styledElement = StyledElement(
       name: context.elementName,
       elementId: context.id,
@@ -105,34 +107,24 @@ class StyledElementBuiltIn extends HtmlExtension {
       case "address":
         continue italics;
       case "article":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "aside":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       bold:
       case "b":
-        styledElement.style = Style(
-          fontWeight: FontWeight.bold,
-        );
+        styledElement.style = Style(fontWeight: FontWeight.bold);
         break;
       case "bdo":
         TextDirection textDirection =
             ((context.attributes["dir"] ?? "ltr") == "rtl")
-                ? TextDirection.rtl
-                : TextDirection.ltr;
-        styledElement.style = Style(
-          direction: textDirection,
-        );
+            ? TextDirection.rtl
+            : TextDirection.ltr;
+        styledElement.style = Style(direction: textDirection);
         break;
       case "big":
-        styledElement.style = Style(
-          fontSize: FontSize.larger,
-        );
+        styledElement.style = Style(fontSize: FontSize.larger);
         break;
       case "blockquote":
         styledElement.style = Style(
@@ -156,9 +148,7 @@ class StyledElementBuiltIn extends HtmlExtension {
         continue italics;
       monospace:
       case "code":
-        styledElement.style = Style(
-          fontFamily: 'Monospace',
-        );
+        styledElement.style = Style(fontFamily: 'Monospace');
         break;
       case "dd":
         styledElement.style = Style(
@@ -168,16 +158,12 @@ class StyledElementBuiltIn extends HtmlExtension {
         break;
       strikeThrough:
       case "del":
-        styledElement.style = Style(
-          textDecoration: TextDecoration.lineThrough,
-        );
+        styledElement.style = Style(textDecoration: TextDecoration.lineThrough);
         break;
       case "dfn":
         continue italics;
       case "div":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "dl":
         styledElement.style = Style(
@@ -186,16 +172,12 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "dt":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "em":
         continue italics;
       case "figcaption":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "figure":
         styledElement.style = Style(
@@ -209,18 +191,18 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "footer":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "font":
         styledElement.style = Style(
           color: context.attributes['color'] != null
               ? context.attributes['color']!.startsWith("#")
-                  ? ExpressionMapping.stringToColor(
-                      context.attributes['color']!)
-                  : ExpressionMapping.namedColorToColor(
-                      context.attributes['color']!)
+                    ? ExpressionMapping.stringToColor(
+                        context.attributes['color']!,
+                      )
+                    : ExpressionMapping.namedColorToColor(
+                        context.attributes['color']!,
+                      )
               : null,
           fontFamily: context.attributes['face']?.split(",").first,
           fontSize: context.attributes['size'] != null
@@ -276,9 +258,7 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "header":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "hr":
         styledElement.style = Style(
@@ -293,29 +273,21 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "html":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       italics:
       case "i":
-        styledElement.style = Style(
-          fontStyle: FontStyle.italic,
-        );
+        styledElement.style = Style(fontStyle: FontStyle.italic);
         break;
       case "ins":
         continue underline;
       case "kbd":
         continue monospace;
       case "li":
-        styledElement.style = Style(
-          display: Display.listItem,
-        );
+        styledElement.style = Style(display: Display.listItem);
         break;
       case "main":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "mark":
         styledElement.style = Style(
@@ -324,14 +296,10 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "nav":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "noscript":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "ol":
         styledElement.style = Style(
@@ -370,24 +338,17 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "q":
-        styledElement.style = Style(
-          before: "\"",
-          after: "\"",
-        );
+        styledElement.style = Style(before: "\"", after: "\"");
         break;
       case "s":
         continue strikeThrough;
       case "samp":
         continue monospace;
       case "section":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "small":
-        styledElement.style = Style(
-          fontSize: FontSize.smaller,
-        );
+        styledElement.style = Style(fontSize: FontSize.smaller);
         break;
       case "strike":
         continue strikeThrough;
@@ -400,9 +361,7 @@ class StyledElementBuiltIn extends HtmlExtension {
         );
         break;
       case "summary":
-        styledElement.style = Style(
-          display: Display.block,
-        );
+        styledElement.style = Style(display: Display.block);
         break;
       case "sup":
         styledElement.style = Style(
@@ -418,13 +377,15 @@ class StyledElementBuiltIn extends HtmlExtension {
           if (child.attributes.containsKey("style")) {
             final newStyle = inlineCssToStyle(child.attributes["style"], null);
             if (newStyle != null) {
-              styledElement.style = styledElement.style
-                  .merge(Style(textDecorationColor: newStyle.color));
+              styledElement.style = styledElement.style.merge(
+                Style(textDecorationColor: newStyle.color),
+              );
             }
           }
         }
-        styledElement.style = styledElement.style
-            .merge(Style(textDecoration: TextDecoration.underline));
+        styledElement.style = styledElement.style.merge(
+          Style(textDecoration: TextDecoration.underline),
+        );
         break;
       case "var":
         continue italics;
@@ -448,18 +409,24 @@ class StyledElementBuiltIn extends HtmlExtension {
           key: AnchorKey.of(context.parser.key, context.styledElement),
           style: context.style!,
           shrinkWrap: context.parser.shrinkWrap,
-          childIsReplaced:
-              ["iframe", "img", "video", "audio"].contains(context.elementName),
+          childIsReplaced: [
+            "iframe",
+            "img",
+            "video",
+            "audio",
+          ].contains(context.elementName),
           children: context.builtChildrenMap!.entries
-              .expandIndexed((i, child) => [
-                    child.value,
-                    if (context.parser.shrinkWrap &&
-                        i != context.styledElement!.children.length - 1 &&
-                        (child.key.style.display?.isBlock ?? false) &&
-                        child.key.element?.localName != "html" &&
-                        child.key.element?.localName != "body")
-                      const TextSpan(text: "\n", style: TextStyle(fontSize: 0)),
-                  ])
+              .expandIndexed(
+                (i, child) => [
+                  child.value,
+                  if (context.parser.shrinkWrap &&
+                      i != context.styledElement!.children.length - 1 &&
+                      (child.key.style.display?.isBlock ?? false) &&
+                      child.key.element?.localName != "html" &&
+                      child.key.element?.localName != "body")
+                    const TextSpan(text: "\n", style: TextStyle(fontSize: 0)),
+                ],
+              )
               .toList(),
         ),
       );
@@ -468,17 +435,19 @@ class StyledElementBuiltIn extends HtmlExtension {
     return TextSpan(
       style: context.styledElement!.style.generateTextStyle(),
       children: context.builtChildrenMap!.entries
-          .expandIndexed((index, child) => [
-                child.value,
-                if (context.parser.shrinkWrap &&
-                    (child.key.style.display?.isBlock ?? false) &&
-                    index != context.styledElement!.children.length - 1 &&
-                    child.key.element?.parent?.localName != "th" &&
-                    child.key.element?.parent?.localName != "td" &&
-                    child.key.element?.localName != "html" &&
-                    child.key.element?.localName != "body")
-                  const TextSpan(text: "\n", style: TextStyle(fontSize: 0)),
-              ])
+          .expandIndexed(
+            (index, child) => [
+              child.value,
+              if (context.parser.shrinkWrap &&
+                  (child.key.style.display?.isBlock ?? false) &&
+                  index != context.styledElement!.children.length - 1 &&
+                  child.key.element?.parent?.localName != "th" &&
+                  child.key.element?.parent?.localName != "td" &&
+                  child.key.element?.localName != "html" &&
+                  child.key.element?.localName != "body")
+                const TextSpan(text: "\n", style: TextStyle(fontSize: 0)),
+            ],
+          )
           .toList(),
     );
   }

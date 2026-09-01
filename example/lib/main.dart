@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
       home: const MyHomePage(title: 'flutter_html Example'),
     );
   }
@@ -280,8 +278,10 @@ class MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.arrow_downward),
         onPressed: () {
-          final anchorContext =
-              AnchorKey.forId(staticAnchorKey, "bottom")?.currentContext;
+          final anchorContext = AnchorKey.forId(
+            staticAnchorKey,
+            "bottom",
+          )?.currentContext;
           if (anchorContext != null) {
             Scrollable.ensureVisible(anchorContext);
           }
@@ -308,9 +308,7 @@ class MyHomePageState extends State<MyHomePage> {
               display: Display.block,
               fontSize: FontSize(5, Unit.em),
             ),
-            ".second-table": Style(
-              backgroundColor: Colors.transparent,
-            ),
+            ".second-table": Style(backgroundColor: Colors.transparent),
             ".second-table tr td:first-child": Style(
               fontWeight: FontWeight.bold,
               textAlign: TextAlign.end,
@@ -318,13 +316,14 @@ class MyHomePageState extends State<MyHomePage> {
           },
           extensions: [
             TagWrapExtension(
-                tagsToWrap: {"table"},
-                builder: (child) {
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: child,
-                  );
-                }),
+              tagsToWrap: {"table"},
+              builder: (child) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: child,
+                );
+              },
+            ),
             TagExtension(
               tagsToExtend: {"tex"},
               builder: (context) => Math.tex(
@@ -372,7 +371,7 @@ class MyHomePageState extends State<MyHomePage> {
             const TableHtmlExtension(),
             const SvgHtmlExtension(),
           ],
-          onLinkTap: (url, _, __) {
+          onLinkTap: (url, _, _) {
             debugPrint("Opening $url...");
           },
           onCssParseError: (css, messages) {

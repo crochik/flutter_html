@@ -8,7 +8,8 @@ import 'dart:typed_data';
 import 'dart:convert';
 
 const svgRawString = '''<rect x="5" y="5" width="10" height="10"/>''';
-const svgString = '''
+const svgString =
+    '''
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 20 20">
   $svgRawString
 </svg>
@@ -43,14 +44,7 @@ void testMatchAndRender(
   TestResult expectedResult,
 ) {
   testWidgets(testName, (WidgetTester tester) async {
-    await tester.pumpWidget(
-      TestApp(
-        Html(
-          data: data,
-          extensions: [extension],
-        ),
-      ),
-    );
+    await tester.pumpWidget(TestApp(Html(data: data, extensions: [extension])));
 
     switch (expectedResult) {
       case TestResult.noMatch:
@@ -58,7 +52,9 @@ void testMatchAndRender(
         break;
       case TestResult.matchAndFail:
         await expectLater(
-            tester.takeException(), anyOf(isException, isStateError));
+          tester.takeException(),
+          anyOf(isException, isStateError),
+        );
         break;
       case TestResult.matchAndRenderSvgPicture:
         await expectLater(find.byType(SvgPicture), findsOneWidget);

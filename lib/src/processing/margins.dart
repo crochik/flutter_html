@@ -42,10 +42,12 @@ class MarginProcessing {
     // Handle case (1) from above.
     // Top margins cannot collapse if the element has padding
     if ((tree.style.padding?.top ?? 0) == 0) {
-      final parentTop = tree.style.margin?.top?.value ??
+      final parentTop =
+          tree.style.margin?.top?.value ??
           tree.style.margin?.blockStart?.value ??
           0;
-      final firstChildTop = tree.children.first.style.margin?.top?.value ??
+      final firstChildTop =
+          tree.children.first.style.margin?.top?.value ??
           tree.children.first.style.margin?.blockStart?.value ??
           0;
       final newOuterMarginTop = max(parentTop, firstChildTop);
@@ -54,16 +56,17 @@ class MarginProcessing {
       if (tree.style.margin == null) {
         tree.style.margin = Margins.only(top: newOuterMarginTop);
       } else {
-        tree.style.margin =
-            tree.style.margin!.copyWithEdge(top: newOuterMarginTop);
+        tree.style.margin = tree.style.margin!.copyWithEdge(
+          top: newOuterMarginTop,
+        );
       }
 
       // And remove the child's margin
       if (tree.children.first.style.margin == null) {
         tree.children.first.style.margin = Margins.zero;
       } else {
-        tree.children.first.style.margin =
-            tree.children.first.style.margin!.copyWithEdge(top: 0);
+        tree.children.first.style.margin = tree.children.first.style.margin!
+            .copyWithEdge(top: 0);
       }
     }
 
@@ -72,10 +75,12 @@ class MarginProcessing {
     if ((tree.style.padding?.bottom?.value ??
             tree.style.padding?.blockEnd?.value) ==
         0) {
-      final parentBottom = tree.style.margin?.bottom?.value ??
+      final parentBottom =
+          tree.style.margin?.bottom?.value ??
           tree.style.margin?.blockEnd?.value ??
           0;
-      final lastChildBottom = tree.children.last.style.margin?.bottom?.value ??
+      final lastChildBottom =
+          tree.children.last.style.margin?.bottom?.value ??
           tree.children.last.style.margin?.blockEnd?.value ??
           0;
       final newOuterMarginBottom = max(parentBottom, lastChildBottom);
@@ -84,16 +89,17 @@ class MarginProcessing {
       if (tree.style.margin == null) {
         tree.style.margin = Margins.only(bottom: newOuterMarginBottom);
       } else {
-        tree.style.margin =
-            tree.style.margin!.copyWithEdge(bottom: newOuterMarginBottom);
+        tree.style.margin = tree.style.margin!.copyWithEdge(
+          bottom: newOuterMarginBottom,
+        );
       }
 
       // And remove the child's margin
       if (tree.children.last.style.margin == null) {
         tree.children.last.style.margin = Margins.zero;
       } else {
-        tree.children.last.style.margin =
-            tree.children.last.style.margin!.copyWith(bottom: Margin.zero());
+        tree.children.last.style.margin = tree.children.last.style.margin!
+            .copyWith(bottom: Margin.zero());
       }
     }
 
@@ -102,9 +108,10 @@ class MarginProcessing {
       for (int i = 1; i < tree.children.length; i++) {
         final previousSiblingBottom =
             tree.children[i - 1].style.margin?.bottom?.value ??
-                tree.children[i - 1].style.margin?.blockEnd?.value ??
-                0;
-        final thisTop = tree.children[i].style.margin?.top?.value ??
+            tree.children[i - 1].style.margin?.blockEnd?.value ??
+            0;
+        final thisTop =
+            tree.children[i].style.margin?.top?.value ??
             tree.children[i].style.margin?.blockStart?.value ??
             0;
         final newInternalMargin = max(previousSiblingBottom, thisTop);
@@ -113,8 +120,8 @@ class MarginProcessing {
         if (tree.children[i].style.margin == null) {
           tree.children[i].style.margin = Margins.only(top: newTop);
         } else {
-          tree.children[i].style.margin =
-              tree.children[i].style.margin!.copyWithEdge(top: newTop);
+          tree.children[i].style.margin = tree.children[i].style.margin!
+              .copyWithEdge(top: newTop);
         }
       }
     }

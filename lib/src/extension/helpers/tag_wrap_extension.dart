@@ -26,10 +26,7 @@ class TagWrapExtension extends HtmlExtension {
   ///   ),
   /// ],
   /// ```
-  TagWrapExtension({
-    required this.tagsToWrap,
-    required this.builder,
-  });
+  TagWrapExtension({required this.tagsToWrap, required this.builder});
 
   @override
   Set<String> get supportedTags => tagsToWrap;
@@ -49,7 +46,9 @@ class TagWrapExtension extends HtmlExtension {
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     return WrapperElement(
       child: context.parser.prepareFromExtension(
         context,
@@ -66,19 +65,16 @@ class TagWrapExtension extends HtmlExtension {
       style: context.style!,
     );
 
-    return WidgetSpan(
-      child: builder.call(child),
-    );
+    return WidgetSpan(child: builder.call(child));
   }
 }
 
 class WrapperElement extends StyledElement {
-  WrapperElement({
-    required StyledElement child,
-  }) : super(
-          node: html.Element.tag("wrapper-element"),
-          style: Style(),
-          children: [child],
-          name: "[wrapper-element]",
-        );
+  WrapperElement({required StyledElement child})
+    : super(
+        node: html.Element.tag("wrapper-element"),
+        style: Style(),
+        children: [child],
+        name: "[wrapper-element]",
+      );
 }

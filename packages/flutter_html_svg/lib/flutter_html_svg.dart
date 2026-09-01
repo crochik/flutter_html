@@ -95,7 +95,9 @@ class SvgHtmlExtension extends HtmlExtension {
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     if (context.elementName == "svg") {
       final parsedWidth = double.tryParse(context.attributes['width'] ?? "");
       final parsedHeight = double.tryParse(context.attributes['height'] ?? "");
@@ -246,4 +248,5 @@ class SvgTagElement extends ReplacedElement {
 
 /// Defines the format that a data URI might take
 final _dataUriFormat = RegExp(
-    r"^(?<scheme>data):(?<mime>image/[\w+\-.]+);*(?<encoding>base64)?,\s*(?<data>.*)");
+  r"^(?<scheme>data):(?<mime>image/[\w+\-.]+);*(?<encoding>base64)?,\s*(?<data>.*)",
+);

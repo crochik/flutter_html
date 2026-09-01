@@ -5,7 +5,8 @@ enum UnitType {
   auto,
   lengthPercent(children: [UnitType.length, UnitType.percent]),
   lengthPercentAuto(
-      children: [UnitType.length, UnitType.percent, UnitType.auto]);
+    children: [UnitType.length, UnitType.percent, UnitType.auto],
+  );
 
   final List<UnitType> children;
 
@@ -39,8 +40,10 @@ abstract class Dimension {
   Unit unit;
 
   Dimension(this.value, this.unit, UnitType dimensionUnitType)
-      : assert(dimensionUnitType.matches(unit.unitType),
-            "This Dimension was given a Unit that isn't specified.");
+    : assert(
+        dimensionUnitType.matches(unit.unitType),
+        "This Dimension was given a Unit that isn't specified.",
+      );
 
   double? calculateRelativeValue(double remValue, double emValue) {
     if (unit == Unit.rem) {
@@ -57,7 +60,7 @@ abstract class Dimension {
 /// these can be fixed or relative (but they must not be a percent)
 class Length extends Dimension {
   Length(double value, [Unit unit = Unit.px])
-      : super(value, unit, UnitType.length);
+    : super(value, unit, UnitType.length);
 }
 
 /// This dimension takes a value with a length-percent unit such as px or em
@@ -65,10 +68,10 @@ class Length extends Dimension {
 /// percent)
 class LengthOrPercent extends Dimension {
   LengthOrPercent(double value, [Unit unit = Unit.px])
-      : super(value, unit, UnitType.lengthPercent);
+    : super(value, unit, UnitType.lengthPercent);
 }
 
 class AutoOrLengthOrPercent extends Dimension {
   AutoOrLengthOrPercent(double value, [Unit unit = Unit.px])
-      : super(value, unit, UnitType.lengthPercentAuto);
+    : super(value, unit, UnitType.lengthPercentAuto);
 }

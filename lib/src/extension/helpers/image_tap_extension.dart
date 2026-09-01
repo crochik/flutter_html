@@ -30,13 +30,13 @@ class OnImageTapExtension extends ImageBuiltIn {
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     return ImageTapExtensionElement(
       node: html.Element.tag("img-tap"),
       style: Style(),
-      children: [
-        super.prepare(context, children),
-      ],
+      children: [super.prepare(context, children)],
       name: "img-tap",
       elementId: context.id,
       elementClasses: context.classes.toList(),
@@ -55,24 +55,26 @@ class OnImageTapExtension extends ImageBuiltIn {
     final actualImage = children.keys.first;
 
     return WidgetSpan(
-      child: Builder(builder: (buildContext) {
-        return GestureDetector(
-          child: CssBoxWidget.withInlineSpanChildren(
-            children: children.values.toList(),
-            style: context.styledElement!.style,
-          ),
-          onTap: () {
-            if (MultipleTapGestureDetector.of(buildContext) != null) {
-              MultipleTapGestureDetector.of(buildContext)!.onTap?.call();
-            }
-            onImageTap(
-              actualImage.attributes['src'],
-              actualImage.attributes,
-              actualImage.element,
-            );
-          },
-        );
-      }),
+      child: Builder(
+        builder: (buildContext) {
+          return GestureDetector(
+            child: CssBoxWidget.withInlineSpanChildren(
+              children: children.values.toList(),
+              style: context.styledElement!.style,
+            ),
+            onTap: () {
+              if (MultipleTapGestureDetector.of(buildContext) != null) {
+                MultipleTapGestureDetector.of(buildContext)!.onTap?.call();
+              }
+              onImageTap(
+                actualImage.attributes['src'],
+                actualImage.attributes,
+                actualImage.element,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

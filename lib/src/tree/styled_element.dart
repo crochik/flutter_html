@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:csslib/parser.dart' as css_parser;
 import 'package:flutter_html/src/style.dart';
 import 'package:html/dom.dart' as dom;
 //TODO(Sub6Resources): don't use the internal code of the html package as it may change unexpectedly.
@@ -28,7 +29,15 @@ class StyledElement {
 
   bool matches(dom.Element element, String selector) {
     try {
-      return qs.matches(element, selector);
+      final errors = <css_parser.Message>[];
+      final selectorGroup = css_parser.parseSelectorGroup(
+        selector,
+        errors: errors,
+      );
+      if (selectorGroup == null || errors.isNotEmpty) {
+        return false;
+      }
+      return qs.SelectorEvaluator().matches(element, selectorGroup);
     } catch (_) {
       return false;
     }
@@ -39,8 +48,8 @@ class StyledElement {
   }
 
   Map<String, String> get attributes => node.attributes.map((key, value) {
-        return MapEntry(key.toString(), value);
-      });
+    return MapEntry(key.toString(), value);
+  });
 
   dom.Element? get element {
     if (node is dom.Element) {
@@ -54,8 +63,10 @@ class StyledElement {
     String selfData =
         "[$name] ${children.length} ${elementClasses.isNotEmpty == true ? 'C:${elementClasses.toString()}' : ''}${elementId.isNotEmpty == true ? 'ID: $elementId' : ''}";
     for (var child in children) {
-      selfData += ("\n${child.toString()}")
-          .replaceAll(RegExp("^", multiLine: true), "-");
+      selfData += ("\n${child.toString()}").replaceAll(
+        RegExp("^", multiLine: true),
+        "-",
+      );
     }
     return selfData;
   }
@@ -91,8 +102,10 @@ FontSize numberToFontSize(String num) {
 
 extension DeepCopy on ListQueue<Counter> {
   ListQueue<Counter> deepCopy() {
-    return ListQueue<Counter>.from(map((counter) {
-      return Counter(counter.name, counter.value);
-    }));
+    return ListQueue<Counter>.from(
+      map((counter) {
+        return Counter(counter.name, counter.value);
+      }),
+    );
   }
 }

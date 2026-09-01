@@ -61,8 +61,9 @@ class WhitespaceProcessing {
       for (int i = 0; i < tree.children.length; i++) {
         final lastChild = i != 0 ? tree.children[i - 1] : null;
         final child = tree.children[i];
-        final nextChild =
-            (i + 1) != tree.children.length ? tree.children[i + 1] : null;
+        final nextChild = (i + 1) != tree.children.length
+            ? tree.children[i + 1]
+            : null;
 
         if (child.style.whiteSpace == WhiteSpace.pre) {
           continue;
@@ -140,8 +141,9 @@ class WhitespaceProcessing {
 
       /// find the index of the text in the current tree
       if (tree.element?.nodes.isNotEmpty ?? false) {
-        textIndex =
-            tree.element!.nodes.indexWhere((element) => element == tree.node);
+        textIndex = tree.element!.nodes.indexWhere(
+          (element) => element == tree.node,
+        );
       }
 
       /// get the parent nodes
@@ -149,8 +151,9 @@ class WhitespaceProcessing {
 
       /// find the index of the tree itself in the parent nodes
       if (parentNodes?.isNotEmpty ?? false) {
-        elementIndex =
-            parentNodes!.indexWhere((element) => element == tree.element);
+        elementIndex = parentNodes!.indexWhere(
+          (element) => element == tree.element,
+        );
       }
 
       /// if the tree is any node except the last node in the node list and the
@@ -270,7 +273,8 @@ class WhitespaceProcessing {
       }
 
       // This is used above to check if the previous element is a block element or a line break.
-      lastChildBlock = (child.style.display == Display.block ||
+      lastChildBlock =
+          (child.style.display == Display.block ||
           child.style.display == Display.listItem ||
           (child is TextContentElement && child.text == '\n'));
     });

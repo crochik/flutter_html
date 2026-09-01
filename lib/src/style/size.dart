@@ -5,14 +5,14 @@ import 'package:flutter_html/flutter_html.dart';
 /// provided for convenience.
 class Width extends AutoOrLengthOrPercent {
   Width(super.value, [super.unit = Unit.px])
-      : assert(value >= 0, 'Width value must be non-negative');
+    : assert(value >= 0, 'Width value must be non-negative');
 
   Width.auto() : super(0, Unit.auto);
 }
 
 class Height extends AutoOrLengthOrPercent {
   Height(super.value, [super.unit = Unit.px])
-      : assert(value >= 0, 'Height value must be non-negative');
+    : assert(value >= 0, 'Height value must be non-negative');
 
   Height.auto() : super(0, Unit.auto);
 }

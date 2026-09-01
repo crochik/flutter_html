@@ -5,10 +5,7 @@ class Marker {
 
   Style? style;
 
-  Marker({
-    this.content = Content.normal,
-    this.style,
-  });
+  Marker({this.content = Content.normal, this.style});
 }
 
 class Content {
@@ -16,17 +13,15 @@ class Content {
   final bool _normal;
   final bool display;
 
-  const Content(this.replacementContent)
-      : _normal = false,
-        display = true;
+  const Content(this.replacementContent) : _normal = false, display = true;
   const Content._normal()
-      : _normal = true,
-        display = true,
-        replacementContent = null;
+    : _normal = true,
+      display = true,
+      replacementContent = null;
   const Content._none()
-      : _normal = false,
-        display = false,
-        replacementContent = null;
+    : _normal = false,
+      display = false,
+      replacementContent = null;
 
   static const Content none = Content._none();
   static const Content normal = Content._normal();

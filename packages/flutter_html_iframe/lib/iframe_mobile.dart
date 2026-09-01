@@ -22,19 +22,22 @@ class IframeWidget extends StatelessWidget {
 
     final sandboxMode = extensionContext.attributes["sandbox"];
     controller.setJavaScriptMode(
-        sandboxMode == null || sandboxMode.contains("allow-scripts")
-            ? JavaScriptMode.unrestricted
-            : JavaScriptMode.disabled);
+      sandboxMode == null || sandboxMode.contains("allow-scripts")
+          ? JavaScriptMode.unrestricted
+          : JavaScriptMode.disabled,
+    );
 
     if (navigationDelegate != null) {
       controller.setNavigationDelegate(navigationDelegate!);
     }
 
     final UniqueKey key = UniqueKey();
-    final givenWidth =
-        double.tryParse(extensionContext.attributes['width'] ?? "");
-    final givenHeight =
-        double.tryParse(extensionContext.attributes['height'] ?? "");
+    final givenWidth = double.tryParse(
+      extensionContext.attributes['width'] ?? "",
+    );
+    final givenHeight = double.tryParse(
+      extensionContext.attributes['height'] ?? "",
+    );
 
     Uri? srcUri;
 

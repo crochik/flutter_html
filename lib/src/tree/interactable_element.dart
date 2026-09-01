@@ -15,6 +15,4 @@ class InteractiveElement extends StyledElement {
 }
 
 /// A [Gesture] indicates the type of interaction by a user.
-enum Gesture {
-  tap,
-}
+enum Gesture { tap }

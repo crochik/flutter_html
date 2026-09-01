@@ -282,17 +282,19 @@ class Style {
   }
 
   static Map<String, Style> fromThemeData(ThemeData theme) => {
-        'h1': Style.fromTextStyle(theme.textTheme.displayLarge!),
-        'h2': Style.fromTextStyle(theme.textTheme.displayMedium!),
-        'h3': Style.fromTextStyle(theme.textTheme.displaySmall!),
-        'h4': Style.fromTextStyle(theme.textTheme.headlineMedium!),
-        'h5': Style.fromTextStyle(theme.textTheme.headlineSmall!),
-        'h6': Style.fromTextStyle(theme.textTheme.titleLarge!),
-        'body': Style.fromTextStyle(theme.textTheme.bodyMedium!),
-      };
+    'h1': Style.fromTextStyle(theme.textTheme.displayLarge!),
+    'h2': Style.fromTextStyle(theme.textTheme.displayMedium!),
+    'h3': Style.fromTextStyle(theme.textTheme.displaySmall!),
+    'h4': Style.fromTextStyle(theme.textTheme.headlineMedium!),
+    'h5': Style.fromTextStyle(theme.textTheme.headlineSmall!),
+    'h6': Style.fromTextStyle(theme.textTheme.titleLarge!),
+    'body': Style.fromTextStyle(theme.textTheme.bodyMedium!),
+  };
 
   static Map<String, Style> fromCss(
-      String css, OnCssParseError? onCssParseError) {
+    String css,
+    OnCssParseError? onCssParseError,
+  ) {
     final declarations = parseExternalCss(css, onCssParseError);
     Map<String, Style> styleMap = {};
     declarations.forEach((key, value) {
@@ -375,10 +377,12 @@ class Style {
 
     LineHeight? finalLineHeight = child.lineHeight != null
         ? child.lineHeight?.units == "length"
-            ? LineHeight(child.lineHeight!.size! /
-                (finalFontSize == null ? 14 : finalFontSize.value) *
-                1.2)
-            : child.lineHeight
+              ? LineHeight(
+                  child.lineHeight!.size! /
+                      (finalFontSize == null ? 14 : finalFontSize.value) *
+                      1.2,
+                )
+              : child.lineHeight
         : lineHeight;
 
     return child.copyWith(
@@ -513,8 +517,9 @@ class Style {
       fontFamily: textStyle.fontFamily,
       fontFamilyFallback: textStyle.fontFamilyFallback,
       fontFeatureSettings: textStyle.fontFeatures,
-      fontSize:
-          textStyle.fontSize != null ? FontSize(textStyle.fontSize!) : null,
+      fontSize: textStyle.fontSize != null
+          ? FontSize(textStyle.fontSize!)
+          : null,
       fontStyle: textStyle.fontStyle,
       fontWeight: textStyle.fontWeight,
       letterSpacing: textStyle.letterSpacing,
@@ -536,8 +541,10 @@ class Style {
       height = Height(calculatedHeight);
     }
 
-    final calculatedFontSize =
-        fontSize?.calculateRelativeValue(remValue, emValue);
+    final calculatedFontSize = fontSize?.calculateRelativeValue(
+      remValue,
+      emValue,
+    );
     if (calculatedFontSize != null) {
       fontSize = FontSize(calculatedFontSize);
     }
@@ -674,17 +681,9 @@ class ListStyleImage {
   const ListStyleImage(this.uriText);
 }
 
-enum ListStylePosition {
-  outside,
-  inside,
-}
+enum ListStylePosition { outside, inside }
 
-enum TextTransform {
-  uppercase,
-  lowercase,
-  capitalize,
-  none,
-}
+enum TextTransform { uppercase, lowercase, capitalize, none }
 
 enum VerticalAlign {
   baseline,
@@ -722,7 +721,4 @@ enum VerticalAlign {
   }
 }
 
-enum WhiteSpace {
-  normal,
-  pre,
-}
+enum WhiteSpace { normal, pre }

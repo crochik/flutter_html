@@ -50,17 +50,19 @@ class Margins {
   /// Auto margins already have a "value" of zero so can be considered collapsed.
   Margins collapse() {
     return Margins(
-        left: left?.unit == Unit.auto ? left : Margin(0, Unit.px),
-        right: right?.unit == Unit.auto ? right : Margin(0, Unit.px),
-        inlineEnd:
-            inlineEnd?.unit == Unit.auto ? inlineEnd : Margin(0, Unit.px),
-        inlineStart:
-            inlineStart?.unit == Unit.auto ? inlineStart : Margin(0, Unit.px),
-        top: top?.unit == Unit.auto ? top : Margin(0, Unit.px),
-        bottom: bottom?.unit == Unit.auto ? bottom : Margin(0, Unit.px),
-        blockEnd: blockEnd?.unit == Unit.auto ? blockEnd : Margin(0, Unit.px),
-        blockStart:
-            blockStart?.unit == Unit.auto ? blockStart : Margin(0, Unit.px));
+      left: left?.unit == Unit.auto ? left : Margin(0, Unit.px),
+      right: right?.unit == Unit.auto ? right : Margin(0, Unit.px),
+      inlineEnd: inlineEnd?.unit == Unit.auto ? inlineEnd : Margin(0, Unit.px),
+      inlineStart: inlineStart?.unit == Unit.auto
+          ? inlineStart
+          : Margin(0, Unit.px),
+      top: top?.unit == Unit.auto ? top : Margin(0, Unit.px),
+      bottom: bottom?.unit == Unit.auto ? bottom : Margin(0, Unit.px),
+      blockEnd: blockEnd?.unit == Unit.auto ? blockEnd : Margin(0, Unit.px),
+      blockStart: blockStart?.unit == Unit.auto
+          ? blockStart
+          : Margin(0, Unit.px),
+    );
   }
 
   /// The total margin in the horizontal direction.
@@ -133,14 +135,14 @@ class Margins {
 
   /// Analogous to [EdgeInsets.all]
   Margins.all(double value, [Unit? unit])
-      : left = Margin(value, unit),
-        right = Margin(value, unit),
-        inlineEnd = null,
-        inlineStart = null,
-        top = Margin(value, unit),
-        bottom = Margin(value, unit),
-        blockEnd = null,
-        blockStart = null;
+    : left = Margin(value, unit),
+      right = Margin(value, unit),
+      inlineEnd = null,
+      inlineStart = null,
+      top = Margin(value, unit),
+      bottom = Margin(value, unit),
+      blockEnd = null,
+      blockStart = null;
 
   /// Analogous to [EdgeInsets.only]
   Margins.only({
@@ -153,25 +155,25 @@ class Margins {
     double? blockEnd,
     double? blockStart,
     Unit? unit,
-  })  : left = Margin(left ?? 0, unit),
-        right = Margin(right ?? 0, unit),
-        inlineEnd = inlineEnd != null ? Margin(inlineEnd, unit) : null,
-        inlineStart = inlineStart != null ? Margin(inlineStart, unit) : null,
-        top = Margin(top ?? 0, unit),
-        bottom = Margin(bottom ?? 0, unit),
-        blockEnd = blockEnd != null ? Margin(blockEnd, unit) : null,
-        blockStart = blockStart != null ? Margin(blockStart, unit) : null;
+  }) : left = Margin(left ?? 0, unit),
+       right = Margin(right ?? 0, unit),
+       inlineEnd = inlineEnd != null ? Margin(inlineEnd, unit) : null,
+       inlineStart = inlineStart != null ? Margin(inlineStart, unit) : null,
+       top = Margin(top ?? 0, unit),
+       bottom = Margin(bottom ?? 0, unit),
+       blockEnd = blockEnd != null ? Margin(blockEnd, unit) : null,
+       blockStart = blockStart != null ? Margin(blockStart, unit) : null;
 
   /// Analogous to [EdgeInsets.symmetric]
   Margins.symmetric({double? horizontal, double? vertical, Unit? unit})
-      : left = Margin(horizontal ?? 0, unit),
-        right = Margin(horizontal ?? 0, unit),
-        inlineEnd = null,
-        inlineStart = null,
-        top = Margin(vertical ?? 0, unit),
-        bottom = Margin(vertical ?? 0, unit),
-        blockEnd = null,
-        blockStart = null;
+    : left = Margin(horizontal ?? 0, unit),
+      right = Margin(horizontal ?? 0, unit),
+      inlineEnd = null,
+      inlineStart = null,
+      top = Margin(vertical ?? 0, unit),
+      bottom = Margin(vertical ?? 0, unit),
+      blockEnd = null,
+      blockStart = null;
 
   Margins merge(Margins? other) {
     return copyWith(
@@ -194,7 +196,15 @@ class Margins {
   @override
   int get hashCode {
     return Object.hash(
-        left, right, inlineStart, inlineEnd, top, bottom, blockStart, blockEnd);
+      left,
+      right,
+      inlineStart,
+      inlineEnd,
+      top,
+      bottom,
+      blockStart,
+      blockEnd,
+    );
   }
 
   @override

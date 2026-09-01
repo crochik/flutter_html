@@ -3,20 +3,15 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets(
-    "Check that widget renders a div normally",
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Html(
-            data: "<div>Lorem ipsum dolor sit amet</div>",
-          ),
-        ),
-      );
-      expect(find.text('Lorem ipsum dolor sit amet', findRichText: true),
-          findsOneWidget);
-    },
-  );
+  testWidgets("Check that widget renders a div normally", (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(home: Html(data: "<div>Lorem ipsum dolor sit amet</div>")),
+    );
+    expect(
+      find.text('Lorem ipsum dolor sit amet', findRichText: true),
+      findsOneWidget,
+    );
+  });
 
   const finderKey = Key("find-me");
 
@@ -36,8 +31,10 @@ void main() {
           ),
         ),
       );
-      expect(find.text('Lorem ipsum dolor sit amet', findRichText: true),
-          findsOneWidget);
+      expect(
+        find.text('Lorem ipsum dolor sit amet', findRichText: true),
+        findsOneWidget,
+      );
       expect(find.byKey(finderKey), findsNothing);
     },
   );
@@ -58,33 +55,36 @@ void main() {
           ),
         ),
       );
-      expect(find.text('Lorem ipsum dolor sit amet', findRichText: true),
-          findsOneWidget);
+      expect(
+        find.text('Lorem ipsum dolor sit amet', findRichText: true),
+        findsOneWidget,
+      );
       expect(find.byKey(finderKey), findsNothing);
     },
   );
 
-  testWidgets(
-    "Check that WrapperExtension matches a normal div",
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Html(
-            data: "<div>Lorem ipsum dolor sit amet</div>",
-            extensions: [
-              TagWrapExtension(
-                tagsToWrap: {"div"},
-                builder: (child) => Container(key: finderKey, child: child),
-              ),
-            ],
-          ),
+  testWidgets("Check that WrapperExtension matches a normal div", (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Html(
+          data: "<div>Lorem ipsum dolor sit amet</div>",
+          extensions: [
+            TagWrapExtension(
+              tagsToWrap: {"div"},
+              builder: (child) => Container(key: finderKey, child: child),
+            ),
+          ],
         ),
-      );
-      expect(find.text('Lorem ipsum dolor sit amet', findRichText: true),
-          findsOneWidget);
-      expect(find.byKey(finderKey), findsOneWidget);
-    },
-  );
+      ),
+    );
+    expect(
+      find.text('Lorem ipsum dolor sit amet', findRichText: true),
+      findsOneWidget,
+    );
+    expect(find.byKey(finderKey), findsOneWidget);
+  });
 
   testWidgets(
     "Check that WrapperExtension doesn't render children unnecessarily",
@@ -102,8 +102,10 @@ void main() {
           ),
         ),
       );
-      expect(find.text('Lorem ipsum dolor sit amet', findRichText: true),
-          findsNothing);
+      expect(
+        find.text('Lorem ipsum dolor sit amet', findRichText: true),
+        findsNothing,
+      );
       expect(find.byKey(finderKey), findsOneWidget);
     },
   );
