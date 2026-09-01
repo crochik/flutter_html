@@ -474,6 +474,11 @@ class RenderCSSBox extends RenderBox
 
   @override
   double? computeDistanceToActualBaseline(TextBaseline baseline) {
+    // Kept in lockstep with [computeDryBaseline]; see the note there.
+    if (childIsReplaced) {
+      return null;
+    }
+
     return firstChild?.getDistanceToActualBaseline(baseline);
   }
 
@@ -485,12 +490,89 @@ class RenderCSSBox extends RenderBox
     ).parentSize;
   }
 
+  /// The dry-layout counterpart of [computeDistanceToActualBaseline].
+  ///
+  /// The two must agree. Flutter's `_debugVerifyDryBaselines` throws when one
+  /// returns null and the other doesn't, and because that throw escapes from
+  /// inside `getDryBaseline` it permanently leaves the framework's
+  /// `_computingThisDryBaseline` debug flag set. Every later layout of that
+  /// subtree then trips an unrelated-looking `renderBoxDoingDryBaseline == null`
+  /// assertion, which is how this originally surfaced: an `<img>` inside a
+  /// `<table>` brought down the whole render tree in debug builds.
+  ///
+  /// Declaring the limitation via `debugCannotComputeDryLayout` is not an
+  /// option either, because that also throws for the callers that matter here —
+  /// Flutter's own `_RenderScaledInlineWidget` queries this while laying out a
+  /// baseline-aligned `WidgetSpan`, with `debugCheckingIntrinsics` false.
   @override
   double? computeDryBaseline(
     covariant BoxConstraints constraints,
     TextBaseline baseline,
   ) {
-    return null;
+    final RenderBox? child = firstChild;
+    if (child == null) {
+      return null;
+    }
+
+    // Replaced content (images, SVG, video) has no text baseline of its own, so
+    // CSS aligns it by its bottom margin edge, which is what a null baseline
+    // gets us. Descending would also be unsafe: `RenderImage` and friends don't
+    // implement `computeDryBaseline` at all, and their default implementation
+    // throws rather than returning null.
+    if (childIsReplaced) {
+      return null;
+    }
+
+    return child.getDryBaseline(_childConstraints(constraints), baseline);
+  }
+
+  /// The constraints the marker box is laid out against.
+  BoxConstraints _markerConstraints(BoxConstraints constraints) {
+    final Size containingBlockSize = constraints.biggest;
+
+    return constraints.copyWith(
+      maxWidth: (width.unit != Unit.auto)
+          ? width.value
+          : containingBlockSize.width -
+                (margins.left?.value ?? 0) -
+                (margins.right?.value ?? 0),
+      maxHeight: (height.unit != Unit.auto)
+          ? height.value
+          : containingBlockSize.height -
+                (margins.top?.value ?? 0) -
+                (margins.bottom?.value ?? 0),
+      minWidth: (width.unit != Unit.auto) ? width.value : 0,
+      minHeight: (height.unit != Unit.auto) ? height.value : 0,
+    );
+  }
+
+  /// The constraints [firstChild] is laid out against.
+  ///
+  /// If this element is a block element and not otherwise constrained, we
+  /// constrain the child Container to fill the entire width of this Widget's
+  /// parent, if possible. This is equivalent to setting `width: double.infinity`
+  /// on the inner Container, but we do it here to keep the infinite width from
+  /// being applied if the parent's width is also infinite.
+  BoxConstraints _childConstraints(BoxConstraints constraints) {
+    final Size containingBlockSize = constraints.biggest;
+    final BoxConstraints childConstraints = _markerConstraints(constraints);
+
+    if (display.isBlock &&
+        !shrinkWrap &&
+        !childIsReplaced &&
+        containingBlockSize.width.isFinite) {
+      return childConstraints.enforce(
+        BoxConstraints(
+          maxWidth: math.max(
+            containingBlockSize.width,
+            childConstraints.maxWidth,
+          ),
+          minWidth: childConstraints.maxWidth,
+        ),
+      );
+    }
+
+    return childConstraints;
   }
 
   _Sizes _computeSize({
@@ -512,46 +594,11 @@ class RenderCSSBox extends RenderBox
     RenderBox? markerBoxChild = parentData.nextSibling;
 
     // Calculate child size
-    BoxConstraints childConstraints = constraints.copyWith(
-      maxWidth: (this.width.unit != Unit.auto)
-          ? this.width.value
-          : containingBlockSize.width -
-                (margins.left?.value ?? 0) -
-                (margins.right?.value ?? 0),
-      maxHeight: (this.height.unit != Unit.auto)
-          ? this.height.value
-          : containingBlockSize.height -
-                (margins.top?.value ?? 0) -
-                (margins.bottom?.value ?? 0),
-      minWidth: (this.width.unit != Unit.auto) ? this.width.value : 0,
-      minHeight: (this.height.unit != Unit.auto) ? this.height.value : 0,
-    );
-
     if (markerBoxChild != null) {
-      layoutChild(markerBoxChild, childConstraints);
+      layoutChild(markerBoxChild, _markerConstraints(constraints));
     }
 
-    // If this element is a block element and not otherwise constrained,
-    // we constrain the child Container to fill the entire width of this
-    // Widget's parent, if possible. This is equivalent to setting
-    // `width: double.infinity` on the inner Container, but we do it here
-    // to keep the infinite width from being applied if the parent's width is
-    // also infinite.
-    if (display.isBlock &&
-        !shrinkWrap &&
-        !childIsReplaced &&
-        containingBlockSize.width.isFinite) {
-      childConstraints = childConstraints.enforce(
-        BoxConstraints(
-          maxWidth: math.max(
-            containingBlockSize.width,
-            childConstraints.maxWidth,
-          ),
-          minWidth: childConstraints.maxWidth,
-        ),
-      );
-    }
-    final Size childSize = layoutChild(child, childConstraints);
+    final Size childSize = layoutChild(child, _childConstraints(constraints));
 
     // Calculate used values of margins based on rules
     final usedMargins = _calculateUsedMargins(childSize, containingBlockSize);
