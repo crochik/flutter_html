@@ -4,26 +4,24 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../test_utils.dart';
 
 void main() {
-  testWidgets(
-    'Tag with vertical align set inline should receive that style',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Tag with vertical align set inline should receive that style', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span style="vertical-align: super;">Text</span>
           """,
-          ),
         ),
-      );
-      expect(find.text("Text", findRichText: true), findsOneWidget);
-      expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.sup));
-    },
-  );
+      ),
+    );
+    expect(find.text("Text", findRichText: true), findsOneWidget);
+    expect(
+      findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+      equals(VerticalAlign.sup),
+    );
+  });
 
   testWidgets(
     'Tag with vertical align set in style tag should receive that style',
@@ -40,94 +38,85 @@ void main() {
       );
       expect(find.text("Text", findRichText: true), findsOneWidget);
       expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.sub));
+        findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+        equals(VerticalAlign.sub),
+      );
     },
   );
 
-  testWidgets(
-    'Tag with no vertical align set should have default',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Tag with no vertical align set should have default', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <span>Text</span>
           """,
-          ),
         ),
-      );
-      expect(find.text("Text", findRichText: true), findsOneWidget);
-      expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.baseline));
-    },
-  );
+      ),
+    );
+    expect(find.text("Text", findRichText: true), findsOneWidget);
+    expect(
+      findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+      equals(VerticalAlign.baseline),
+    );
+  });
 
-  testWidgets(
-    'Tag with vertical align bottom set should have that value',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Tag with vertical align bottom set should have that value', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <div style="vertical-align: bottom;">Text</div>
           """,
-          ),
         ),
-      );
-      expect(find.text("Text", findRichText: true), findsOneWidget);
-      expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.bottom));
-    },
-  );
+      ),
+    );
+    expect(find.text("Text", findRichText: true), findsOneWidget);
+    expect(
+      findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+      equals(VerticalAlign.bottom),
+    );
+  });
 
-  testWidgets(
-    'Tag with vertical align middle set should have that value',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Tag with vertical align middle set should have that value', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <div style="vertical-align: middle;">Text</div>
           """,
-          ),
         ),
-      );
-      expect(find.text("Text", findRichText: true), findsOneWidget);
-      expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.middle));
-    },
-  );
+      ),
+    );
+    expect(find.text("Text", findRichText: true), findsOneWidget);
+    expect(
+      findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+      equals(VerticalAlign.middle),
+    );
+  });
 
-  testWidgets(
-    'Tag with vertical align top set should have that value',
-    (tester) async {
-      await tester.pumpWidget(
-        TestApp(
-          child: Html(
-            data: """
+  testWidgets('Tag with vertical align top set should have that value', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      TestApp(
+        child: Html(
+          data: """
             <div style="vertical-align: top;">Text</div>
           """,
-          ),
         ),
-      );
-      expect(find.text("Text", findRichText: true), findsOneWidget);
-      expect(
-          findCssBox(find.text("Text", findRichText: true))!
-              .style
-              .verticalAlign,
-          equals(VerticalAlign.top));
-    },
-  );
+      ),
+    );
+    expect(find.text("Text", findRichText: true), findsOneWidget);
+    expect(
+      findCssBox(find.text("Text", findRichText: true))!.style.verticalAlign,
+      equals(VerticalAlign.top),
+    );
+  });
 }

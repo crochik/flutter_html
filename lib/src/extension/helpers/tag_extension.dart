@@ -16,8 +16,10 @@ class TagExtension extends HtmlExtension {
     required this.tagsToExtend,
     Widget? child,
     Widget Function(ExtensionContext)? builder,
-  }) : assert((child != null) || (builder != null),
-            "Either child or builder needs to be provided to TagExtension") {
+  }) : assert(
+         (child != null) || (builder != null),
+         "Either child or builder needs to be provided to TagExtension",
+       ) {
     if (child != null) {
       this.builder = (_) => WidgetSpan(child: child);
     } else {
@@ -32,8 +34,10 @@ class TagExtension extends HtmlExtension {
     required this.tagsToExtend,
     InlineSpan? child,
     InlineSpan Function(ExtensionContext)? builder,
-  }) : assert((child != null) || (builder != null),
-            "Either child or builder needs to be provided to TagExtension.inline") {
+  }) : assert(
+         (child != null) || (builder != null),
+         "Either child or builder needs to be provided to TagExtension.inline",
+       ) {
     if (child != null) {
       this.builder = (_) => child;
     } else {

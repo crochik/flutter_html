@@ -4,21 +4,23 @@ version: 3.0.0
 homepage: https://github.com/Sub6Resources/flutter_html
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.0.0"
+  sdk: '>=3.10.0 <4.0.0'
+  flutter: '>=3.38.0'
+
+resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
-  html: '>=0.15.0 <1.0.0'
+  html: '>=0.15.7 <1.0.0'
   flutter_html: ^3.0.0
-  web: '>=1.1.1 < 2.0.0'
-  webview_flutter: '>=4.0.0 <5.0.0'
+  web: '>=1.1.1 <2.0.0'
+  webview_flutter: '>=4.14.1 <5.0.0'
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 funding:
   - https://github.com/sponsors/Sub6Resources

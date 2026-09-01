@@ -3,20 +3,18 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets("Check that default parser does not fail on empty data",
-      (tester) async {
+  testWidgets("Check that default parser does not fail on empty data", (
+    tester,
+  ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: Scaffold(
-          body: Html(
-            data: "",
-          ),
-        ),
+        home: Scaffold(body: Html(data: "")),
       ),
     );
   });
-  testWidgets('Test new parser (hacky workaround to get BuildContext)',
-      (WidgetTester tester) async {
+  testWidgets('Test new parser (hacky workaround to get BuildContext)', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       Builder(
         builder: (BuildContext context) {
@@ -33,10 +31,7 @@ void main() {
 void testNewParser(BuildContext context) {
   HtmlParser.parseHTML("<b>Hello, World!</b>");
 
-  Style style1 = Style(
-    display: Display.block,
-    fontWeight: FontWeight.bold,
-  );
+  Style style1 = Style(display: Display.block, fontWeight: FontWeight.bold);
 
   Style style2 = Style(
     before: "* ",

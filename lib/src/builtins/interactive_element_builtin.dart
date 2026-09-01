@@ -22,7 +22,9 @@ class InteractiveElementBuiltIn extends HtmlExtension {
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     return InteractiveElement(
       name: context.elementName,
       children: children,
@@ -51,10 +53,10 @@ class InteractiveElementBuiltIn extends HtmlExtension {
     InlineSpan childSpan,
   ) {
     onTap() => context.parser.internalOnAnchorTap?.call(
-          (context.styledElement! as InteractiveElement).href,
-          context.attributes,
-          (context.node as dom.Element),
-        );
+      (context.styledElement! as InteractiveElement).href,
+      context.attributes,
+      (context.node as dom.Element),
+    );
 
     if (childSpan is TextSpan) {
       return TextSpan(
@@ -74,8 +76,9 @@ class InteractiveElementBuiltIn extends HtmlExtension {
       );
     } else {
       return WidgetSpan(
-        alignment: context.style!.verticalAlign
-            .toPlaceholderAlignment(context.style!.display),
+        alignment: context.style!.verticalAlign.toPlaceholderAlignment(
+          context.style!.display,
+        ),
         baseline: TextBaseline.alphabetic,
         child: MultipleTapGestureDetector(
           onTap: onTap,

@@ -3,16 +3,12 @@
 /// (https://www.w3.org/TR/css-display-3/#the-display-properties)
 enum Display {
   /// Equivalent to css `display: none;`
-  none(
-    displayBox: DisplayBox.none,
-  ),
+  none(displayBox: DisplayBox.none),
 
   /// Equivalent to css `display: contents;`
   ///
   /// Not supported by flutter_html
-  contents(
-    displayBox: DisplayBox.contents,
-  ),
+  contents(displayBox: DisplayBox.contents),
 
   /// Equivalent to css `display: block;`
   block(
@@ -65,10 +61,7 @@ enum Display {
   /// Equivalent to css `display: flex;`
   ///
   /// Not supported by flutter_html
-  flex(
-    displayOutside: DisplayOutside.block,
-    displayInside: DisplayInside.flex,
-  ),
+  flex(displayOutside: DisplayOutside.block, displayInside: DisplayInside.flex),
 
   /// Equivalent to css `display: inline-flex;`
   ///
@@ -81,10 +74,7 @@ enum Display {
   /// Equivalent to css `display: grid;`
   ///
   /// Not supported by flutter_html
-  grid(
-    displayOutside: DisplayOutside.block,
-    displayInside: DisplayInside.grid,
-  ),
+  grid(displayOutside: DisplayOutside.block, displayInside: DisplayInside.grid),
 
   /// Equivalent to css `display: inline-grid;`
   ///
@@ -119,24 +109,16 @@ enum Display {
   ),
 
   /// Equivalent to css `display: table-row-group;`
-  tableRowGroup(
-    displayInternal: DisplayInternal.tableRowGroup,
-  ),
+  tableRowGroup(displayInternal: DisplayInternal.tableRowGroup),
 
   /// Equivalent to css `display: table-header-group;`
-  tableHeaderGroup(
-    displayInternal: DisplayInternal.tableHeaderGroup,
-  ),
+  tableHeaderGroup(displayInternal: DisplayInternal.tableHeaderGroup),
 
   /// Equivalent to css `display: table-footer-group;`
-  tableFooterGroup(
-    displayInternal: DisplayInternal.tableFooterGroup,
-  ),
+  tableFooterGroup(displayInternal: DisplayInternal.tableFooterGroup),
 
   /// Equivalent to css `display: table-row;`
-  tableRow(
-    displayInternal: DisplayInternal.tableRowGroup,
-  ),
+  tableRow(displayInternal: DisplayInternal.tableRowGroup),
 
   /// Equivalent to css `display: table-cell;`
   tableCell(
@@ -145,14 +127,10 @@ enum Display {
   ),
 
   /// Equivalent to css `display: table-column-group;`
-  tableColumnGroup(
-    displayInternal: DisplayInternal.tableColumnGroup,
-  ),
+  tableColumnGroup(displayInternal: DisplayInternal.tableColumnGroup),
 
   /// Equivalent to css `display: table-column;`
-  tableColumn(
-    displayInternal: DisplayInternal.tableColumn,
-  ),
+  tableColumn(displayInternal: DisplayInternal.tableColumn),
 
   /// Equivalent to css `display: table-caption;`
   tableCaption(
@@ -173,14 +151,10 @@ enum Display {
   ),
 
   /// Equivalent to css `display: ruby-base-container;`
-  rubyBaseContainer(
-    displayInternal: DisplayInternal.rubyBaseContainer,
-  ),
+  rubyBaseContainer(displayInternal: DisplayInternal.rubyBaseContainer),
 
   /// Equivalent to css `display: ruby-text-container;`
-  rubyTextContainer(
-    displayInternal: DisplayInternal.rubyTextContainer,
-  );
+  rubyTextContainer(displayInternal: DisplayInternal.rubyTextContainer);
 
   const Display({
     this.displayOutside,

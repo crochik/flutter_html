@@ -5,13 +5,17 @@ class RelativeSizesProcessing {
   /// depend on the font sizes of ancestors in the style tree.
   static StyledElement processRelativeValues(StyledElement tree) {
     return _calculateRelativeValues(
-        tree, 1.0); //TODO do we really need to use devicePixelRatio?
+      tree,
+      1.0,
+    ); //TODO do we really need to use devicePixelRatio?
   }
 
   /// [_calculateRelativeValues] converts rem values to px sizes and then
   /// applies relative calculations
   static StyledElement _calculateRelativeValues(
-      StyledElement tree, double devicePixelRatio) {
+    StyledElement tree,
+    double devicePixelRatio,
+  ) {
     tree.style.fontSize ??= FontSize.medium;
 
     double remSize = (tree.style.fontSize?.value ?? FontSize.medium.value);
@@ -30,7 +34,10 @@ class RelativeSizesProcessing {
 
   /// This is the recursive worker function for [_calculateRelativeValues]
   static void _applyRelativeValuesRecursive(
-      StyledElement tree, double remFontSize, double devicePixelRatio) {
+    StyledElement tree,
+    double remFontSize,
+    double devicePixelRatio,
+  ) {
     //When we get to this point, there should be a valid fontSize at every level.
     assert(tree.style.fontSize != null);
 
@@ -42,16 +49,19 @@ class RelativeSizesProcessing {
       } else {
         switch (child.style.fontSize!.unit) {
           case Unit.em:
-            child.style.fontSize =
-                FontSize(parentFontSize * child.style.fontSize!.value);
+            child.style.fontSize = FontSize(
+              parentFontSize * child.style.fontSize!.value,
+            );
             break;
           case Unit.percent:
             child.style.fontSize = FontSize(
-                parentFontSize * (child.style.fontSize!.value / 100.0));
+              parentFontSize * (child.style.fontSize!.value / 100.0),
+            );
             break;
           case Unit.rem:
-            child.style.fontSize =
-                FontSize(remFontSize * child.style.fontSize!.value);
+            child.style.fontSize = FontSize(
+              remFontSize * child.style.fontSize!.value,
+            );
             break;
           case Unit.px:
           case Unit.auto:

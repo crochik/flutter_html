@@ -20,24 +20,30 @@ class IframeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final givenWidth =
-        double.tryParse(extensionContext.attributes['width'] ?? "");
-    final givenHeight =
-        double.tryParse(extensionContext.attributes['height'] ?? "");
+    final givenWidth = double.tryParse(
+      extensionContext.attributes['width'] ?? "",
+    );
+    final givenHeight = double.tryParse(
+      extensionContext.attributes['height'] ?? "",
+    );
     final HTMLIFrameElement iframe = HTMLIFrameElement()
       ..width = (givenWidth ?? (givenHeight ?? 150) * 2).toString()
       ..height = (givenHeight ?? (givenWidth ?? 300) / 2).toString()
       ..src = extensionContext.attributes['src'] ?? ""
       ..style.border = 'none';
     final String createdViewId = _getRandString(10);
-    ui.platformViewRegistry
-        .registerViewFactory(createdViewId, (int viewId) => iframe);
+    ui.platformViewRegistry.registerViewFactory(
+      createdViewId,
+      (int viewId) => iframe,
+    );
     return SizedBox(
-      width: double.tryParse(extensionContext.attributes['width'] ?? "") ??
+      width:
+          double.tryParse(extensionContext.attributes['width'] ?? "") ??
           (double.tryParse(extensionContext.attributes['height'] ?? "") ??
                   150) *
               2,
-      height: double.tryParse(extensionContext.attributes['height'] ?? "") ??
+      height:
+          double.tryParse(extensionContext.attributes['height'] ?? "") ??
           (double.tryParse(extensionContext.attributes['width'] ?? "") ?? 300) /
               2,
       child: CssBoxWidget(
@@ -45,9 +51,7 @@ class IframeWidget extends StatelessWidget {
         childIsReplaced: true,
         child: Directionality(
           textDirection: extensionContext.styledElement!.style.direction!,
-          child: HtmlElementView(
-            viewType: createdViewId,
-          ),
+          child: HtmlElementView(viewType: createdViewId),
         ),
       ),
     );

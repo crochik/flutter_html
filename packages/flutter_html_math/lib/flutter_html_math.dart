@@ -30,8 +30,11 @@ class MathHtmlExtension extends HtmlExtension {
           textStyle: context.styledElement!.style.generateTextStyle(),
           onErrorFallback: (FlutterMathException e) {
             if (onMathErrorBuilder != null) {
-              return onMathErrorBuilder!
-                  .call(texStr, e.message, e.messageWithType);
+              return onMathErrorBuilder!.call(
+                texStr,
+                e.message,
+                e.messageWithType,
+              );
             } else {
               return Text(e.message);
             }
@@ -99,7 +102,8 @@ String _parseMathRecursive(dom.Node node, String parsed) {
       if (_mathML2Tex.keys.contains(node.text.trim())) {
         parsed = parsed + _mathML2Tex[node.text.trim()]!;
       } else if (node.text.startsWith("&") && node.text.endsWith(";")) {
-        parsed = parsed +
+        parsed =
+            parsed +
             node.text
                 .trim()
                 .replaceFirst("&", r"\")
@@ -109,8 +113,9 @@ String _parseMathRecursive(dom.Node node, String parsed) {
       }
     }
     if (node.localName == 'mtable') {
-      String inner =
-          nodeList.map((e) => _parseMathRecursive(e, '')).join(' \\\\');
+      String inner = nodeList
+          .map((e) => _parseMathRecursive(e, ''))
+          .join(' \\\\');
       parsed = '$parsed\\begin{matrix}$inner\\end{matrix}';
     }
     if (node.localName == "mtd") {
@@ -187,8 +192,9 @@ const Map<String, String> _mathML2Tex = {
   "}": r"\}",
 };
 
-typedef OnMathErrorBuilder = Widget Function(
-  String parsedTex,
-  String exception,
-  String exceptionWithType,
-);
+typedef OnMathErrorBuilder =
+    Widget Function(
+      String parsedTex,
+      String exception,
+      String exceptionWithType,
+    );

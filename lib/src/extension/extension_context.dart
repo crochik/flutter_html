@@ -54,10 +54,12 @@ class ExtensionContext {
   /// Returns a linked hash map representing the attributes of the node, or an
   /// empty map if it has no attributes.
   LinkedHashMap<String, String> get attributes {
-    return LinkedHashMap.from(node.attributes.map((key, value) {
-      // Key is either a String or html.AttributeName
-      return MapEntry(key.toString(), value);
-    }));
+    return LinkedHashMap.from(
+      node.attributes.map((key, value) {
+        // Key is either a String or html.AttributeName
+        return MapEntry(key.toString(), value);
+      }),
+    );
   }
 
   /// Returns the id of the element, or an empty string if it is not present or
@@ -137,9 +139,4 @@ class ExtensionContext {
 
 typedef BuildChildrenCallback = Map<StyledElement, InlineSpan> Function();
 
-enum CurrentStep {
-  preparing,
-  preStyling,
-  preProcessing,
-  building,
-}
+enum CurrentStep { preparing, preStyling, preProcessing, building }

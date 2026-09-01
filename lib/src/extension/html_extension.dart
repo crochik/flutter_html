@@ -36,7 +36,9 @@ abstract class HtmlExtension {
 
   /// Converts parsed HTML to a StyledElement.
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     return StyledElement(
       node: context.node,
       style: Style(),

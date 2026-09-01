@@ -21,9 +21,9 @@ abstract class ReplacedElement extends StyledElement {
   }) : super(children: children ?? []);
 
   static List<String?> parseMediaSources(List<dom.Element> elements) {
-    return elements
-        .where((element) => element.localName == 'source')
-        .map((element) {
+    return elements.where((element) => element.localName == 'source').map((
+      element,
+    ) {
       return element.attributes['src'];
     }).toList();
   }
@@ -47,15 +47,13 @@ class TextContentElement extends ReplacedElement {
 }
 
 class LinebreakContentElement extends ReplacedElement {
-  LinebreakContentElement({
-    required super.style,
-    required super.node,
-  }) : super(name: 'br', elementId: "[[No ID]]");
+  LinebreakContentElement({required super.style, required super.node})
+    : super(name: 'br', elementId: "[[No ID]]");
 }
 
 class EmptyContentElement extends ReplacedElement {
   EmptyContentElement({required super.node, super.name = "empty"})
-      : super(style: Style(), elementId: "[[No ID]]");
+    : super(style: Style(), elementId: "[[No ID]]");
 }
 
 class RubyElement extends ReplacedElement {
@@ -68,7 +66,8 @@ class RubyElement extends ReplacedElement {
     super.name = "ruby",
     required super.node,
   }) : super(
-            alignment: PlaceholderAlignment.middle,
-            style: Style(),
-            elementId: element.id);
+         alignment: PlaceholderAlignment.middle,
+         style: Style(),
+         elementId: element.id,
+       );
 }

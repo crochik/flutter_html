@@ -14,13 +14,13 @@ class TextBuiltIn extends HtmlExtension {
   }
 
   @override
-  Set<String> get supportedTags => {
-        "br",
-      };
+  Set<String> get supportedTags => {"br"};
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     if (context.elementName == "br") {
       return LinebreakContentElement(
         style: Style(whiteSpace: WhiteSpace.pre),

@@ -11,25 +11,15 @@ class TestApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: body,
-      ),
-    );
+    return MaterialApp(home: Scaffold(body: body));
   }
 }
 
 void testHtml(String name, String htmlData) {
   testWidgets('$name golden test', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      TestApp(
-        Html(
-          data: htmlData,
-        ),
-      ),
-    );
+    await tester.pumpWidget(TestApp(Html(data: htmlData)));
     expect(find.byType(Html), findsOneWidget);
-//    await expectLater(find.byType(Html), matchesGoldenFile('./goldens/$name.png'));
+    //    await expectLater(find.byType(Html), matchesGoldenFile('./goldens/$name.png'));
   });
 }
 
@@ -43,7 +33,8 @@ void main() {
   testWidgets('whitespace golden test', (WidgetTester tester) async {
     await tester.pumpWidget(
       TestApp(
-        Html(data: """
+        Html(
+          data: """
           <p id='whitespace'>
       These two lines should have an identical length:<br /><br />
 
@@ -56,20 +47,18 @@ void main() {
              dog.<br />
             The quick brown fox jumped over the lazy dog.
       </p>
-          """),
+          """,
+        ),
       ),
     );
     //    await expectLater(find.byType(Html), matchesGoldenFile('./goldens/whitespace.png'));
   });
 
-  testWidgets('whitespace between inline elements golden test',
-      (WidgetTester tester) async {
+  testWidgets('whitespace between inline elements golden test', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
-      TestApp(
-        Html(
-          data: """<b>Harry</b> <b>Potter</b>""",
-        ),
-      ),
+      TestApp(Html(data: """<b>Harry</b> <b>Potter</b>""")),
     );
     // await expectLater(find.byType(Html), matchesGoldenFile('./goldens/whitespace_btwn_inline.png'));
   });

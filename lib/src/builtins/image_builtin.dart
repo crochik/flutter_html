@@ -35,9 +35,7 @@ class ImageBuiltIn extends HtmlExtension {
   });
 
   @override
-  Set<String> get supportedTags => {
-        "img",
-      };
+  Set<String> get supportedTags => {"img"};
 
   @override
   bool matches(ExtensionContext context) {
@@ -52,7 +50,9 @@ class ImageBuiltIn extends HtmlExtension {
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     final parsedWidth = double.tryParse(context.attributes["width"] ?? "");
     final parsedHeight = double.tryParse(context.attributes["height"] ?? "");
 
@@ -92,8 +92,9 @@ class ImageBuiltIn extends HtmlExtension {
     }
 
     return WidgetSpan(
-      alignment: context.style!.verticalAlign
-          .toPlaceholderAlignment(context.style!.display),
+      alignment: context.style!.verticalAlign.toPlaceholderAlignment(
+        context.style!.display,
+      ),
       baseline: TextBaseline.alphabetic,
       child: CssBoxWidget(
         style: imageStyle,
@@ -104,7 +105,8 @@ class ImageBuiltIn extends HtmlExtension {
   }
 
   static RegExp get dataUriFormat => RegExp(
-      r"^(?<scheme>data):(?<mime>image/[\w+\-.]+);*(?<encoding>base64)?,\s*(?<data>.*)");
+    r"^(?<scheme>data):(?<mime>image/[\w+\-.]+);*(?<encoding>base64)?,\s*(?<data>.*)",
+  );
 
   bool _matchesBase64Image(ExtensionContext context) {
     final attributes = context.attributes;

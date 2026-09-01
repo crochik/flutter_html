@@ -10,10 +10,7 @@ class VerticalAlignBuiltIn extends HtmlExtension {
   const VerticalAlignBuiltIn();
 
   @override
-  Set<String> get supportedTags => {
-        "sub",
-        "sup",
-      };
+  Set<String> get supportedTags => {"sub", "sup"};
 
   @override
   bool matches(ExtensionContext context) {

@@ -11,11 +11,7 @@ class TestApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: child,
-      ),
-    );
+    return MaterialApp(home: Scaffold(body: child));
   }
 }
 
@@ -155,33 +151,35 @@ Future<StyledElement> generateStyledElementTreeFromHtml(
 }) async {
   final completer = Completer<StyledElement>();
 
-  await tester.pumpWidget(TestApp(
-    child: Html(
-      data: html,
-      shrinkWrap: shrinkWrap,
-      extensions: [
-        ...extensions,
-        TestExtension(
-          beforeStyleCallback: (tree) {
-            if (!applyStyleSteps) {
-              completer.complete(tree);
-            }
-          },
-          beforeProcessingCallback: (tree) {
-            if (!completer.isCompleted && !applyProcessingSteps) {
-              completer.complete(tree);
-            }
-          },
-          finalCallback: (tree) {
-            if (!completer.isCompleted) {
-              completer.complete(tree);
-            }
-          },
-        ),
-      ],
-      style: styles,
+  await tester.pumpWidget(
+    TestApp(
+      child: Html(
+        data: html,
+        shrinkWrap: shrinkWrap,
+        extensions: [
+          ...extensions,
+          TestExtension(
+            beforeStyleCallback: (tree) {
+              if (!applyStyleSteps) {
+                completer.complete(tree);
+              }
+            },
+            beforeProcessingCallback: (tree) {
+              if (!completer.isCompleted && !applyProcessingSteps) {
+                completer.complete(tree);
+              }
+            },
+            finalCallback: (tree) {
+              if (!completer.isCompleted) {
+                completer.complete(tree);
+              }
+            },
+          ),
+        ],
+        style: styles,
+      ),
     ),
-  ));
+  );
 
   return completer.future;
 }

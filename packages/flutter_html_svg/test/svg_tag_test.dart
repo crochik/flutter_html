@@ -5,11 +5,7 @@ import './test_utils.dart';
 void main() {
   group("svg tag tests:", () {
     const String svgString = svgRawString;
-    String makeSvgTag({
-      String? content,
-      int? width,
-      int? height,
-    }) {
+    String makeSvgTag({String? content, int? width, int? height}) {
       String widthAttr = width != null ? 'width=$width' : '';
       String heightAttr = height != null ? 'height=$height' : '';
 
@@ -22,9 +18,10 @@ void main() {
 
     // Happy path (taken from SvgPicture examples)
     testMatchAndRender(
-        "matches and renders svg tag",
-        makeSvgTag(content: svgString, width: 100, height: 100),
-        const SvgHtmlExtension(),
-        TestResult.matchAndRenderSvgPicture);
+      "matches and renders svg tag",
+      makeSvgTag(content: svgString, width: 100, height: 100),
+      const SvgHtmlExtension(),
+      TestResult.matchAndRenderSvgPicture,
+    );
   });
 }

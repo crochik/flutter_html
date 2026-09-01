@@ -3,8 +3,8 @@ import 'package:flutter_html/src/style/length.dart';
 
 class HtmlPadding extends LengthOrPercent {
   HtmlPadding(double value, [Unit? unit = Unit.px])
-      : assert(value >= 0, "Padding must be non-negative"),
-        super(value, unit ?? Unit.px);
+    : assert(value >= 0, "Padding must be non-negative"),
+      super(value, unit ?? Unit.px);
 
   HtmlPadding.zero() : super(0, Unit.px);
 
@@ -80,8 +80,9 @@ class HtmlPaddings {
           ? HtmlPadding(inlineStart, this.inlineStart?.unit)
           : this.inlineStart,
       top: top != null ? HtmlPadding(top, this.top?.unit) : this.top,
-      bottom:
-          bottom != null ? HtmlPadding(bottom, this.bottom?.unit) : this.bottom,
+      bottom: bottom != null
+          ? HtmlPadding(bottom, this.bottom?.unit)
+          : this.bottom,
       blockEnd: blockEnd != null
           ? HtmlPadding(blockEnd, this.blockEnd?.unit)
           : this.blockEnd,
@@ -96,14 +97,14 @@ class HtmlPaddings {
 
   /// Analogous to [EdgeInsets.all]
   HtmlPaddings.all(double value, [Unit? unit])
-      : left = HtmlPadding(value, unit),
-        right = HtmlPadding(value, unit),
-        inlineEnd = null,
-        inlineStart = null,
-        top = HtmlPadding(value, unit),
-        bottom = HtmlPadding(value, unit),
-        blockEnd = null,
-        blockStart = null;
+    : left = HtmlPadding(value, unit),
+      right = HtmlPadding(value, unit),
+      inlineEnd = null,
+      inlineStart = null,
+      top = HtmlPadding(value, unit),
+      bottom = HtmlPadding(value, unit),
+      blockEnd = null,
+      blockStart = null;
 
   /// Analogous to [EdgeInsets.only]
   HtmlPaddings.only({
@@ -116,26 +117,27 @@ class HtmlPaddings {
     double? blockEnd,
     double? blockStart,
     Unit? unit,
-  })  : left = left != null ? HtmlPadding(left, unit) : null,
-        right = right != null ? HtmlPadding(right, unit) : null,
-        inlineEnd = inlineEnd != null ? HtmlPadding(inlineEnd, unit) : null,
-        inlineStart =
-            inlineStart != null ? HtmlPadding(inlineStart, unit) : null,
-        top = top != null ? HtmlPadding(top, unit) : null,
-        bottom = bottom != null ? HtmlPadding(bottom, unit) : null,
-        blockEnd = blockEnd != null ? HtmlPadding(blockEnd, unit) : null,
-        blockStart = blockStart != null ? HtmlPadding(blockStart, unit) : null;
+  }) : left = left != null ? HtmlPadding(left, unit) : null,
+       right = right != null ? HtmlPadding(right, unit) : null,
+       inlineEnd = inlineEnd != null ? HtmlPadding(inlineEnd, unit) : null,
+       inlineStart = inlineStart != null
+           ? HtmlPadding(inlineStart, unit)
+           : null,
+       top = top != null ? HtmlPadding(top, unit) : null,
+       bottom = bottom != null ? HtmlPadding(bottom, unit) : null,
+       blockEnd = blockEnd != null ? HtmlPadding(blockEnd, unit) : null,
+       blockStart = blockStart != null ? HtmlPadding(blockStart, unit) : null;
 
   /// Analogous to [EdgeInsets.symmetric]
   HtmlPaddings.symmetric({double? horizontal, double? vertical, Unit? unit})
-      : left = horizontal != null ? HtmlPadding(horizontal, unit) : null,
-        right = horizontal != null ? HtmlPadding(horizontal, unit) : null,
-        inlineEnd = null,
-        inlineStart = null,
-        top = vertical != null ? HtmlPadding(vertical, unit) : null,
-        bottom = vertical != null ? HtmlPadding(vertical, unit) : null,
-        blockEnd = null,
-        blockStart = null;
+    : left = horizontal != null ? HtmlPadding(horizontal, unit) : null,
+      right = horizontal != null ? HtmlPadding(horizontal, unit) : null,
+      inlineEnd = null,
+      inlineStart = null,
+      top = vertical != null ? HtmlPadding(vertical, unit) : null,
+      bottom = vertical != null ? HtmlPadding(vertical, unit) : null,
+      blockEnd = null,
+      blockStart = null;
 
   HtmlPaddings merge(HtmlPaddings? other) {
     return copyWith(
@@ -174,7 +176,15 @@ class HtmlPaddings {
   @override
   int get hashCode {
     return Object.hash(
-        left, right, inlineStart, inlineEnd, top, bottom, blockStart, blockEnd);
+      left,
+      right,
+      inlineStart,
+      inlineEnd,
+      top,
+      bottom,
+      blockStart,
+      blockEnd,
+    );
   }
 
   @override

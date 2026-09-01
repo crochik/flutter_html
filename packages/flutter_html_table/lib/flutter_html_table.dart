@@ -16,20 +16,22 @@ class TableHtmlExtension extends HtmlExtension {
 
   @override
   Set<String> get supportedTags => {
-        "table",
-        "tr",
-        "tbody",
-        "tfoot",
-        "thead",
-        "th",
-        "td",
-        "col",
-        "colgroup",
-      };
+    "table",
+    "tr",
+    "tbody",
+    "tfoot",
+    "thead",
+    "th",
+    "td",
+    "col",
+    "colgroup",
+  };
 
   @override
   StyledElement prepare(
-      ExtensionContext context, List<StyledElement> children) {
+    ExtensionContext context,
+    List<StyledElement> children,
+  ) {
     if (context.elementName == "table") {
       final cellDescendants = _getCellDescendants(children);
 
@@ -77,8 +79,8 @@ class TableHtmlExtension extends HtmlExtension {
           display: context.elementName == "thead"
               ? Display.tableHeaderGroup
               : context.elementName == "tfoot"
-                  ? Display.tableFooterGroup
-                  : Display.tableRowGroup,
+              ? Display.tableFooterGroup
+              : Display.tableRowGroup,
         ),
         node: context.node,
       );
@@ -90,9 +92,7 @@ class TableHtmlExtension extends HtmlExtension {
         elementId: context.id,
         elementClasses: context.classes.toList(),
         children: children,
-        style: Style(
-          display: Display.tableRow,
-        ),
+        style: Style(display: Display.tableRow),
         node: context.node,
       );
     }
@@ -162,10 +162,11 @@ List<TableCellElement> _getCellDescendants(List<StyledElement> children) {
 }
 
 Widget _layoutCells(
-    TableElement table,
-    Map<StyledElement, InlineSpan> parsedCells,
-    ExtensionContext context,
-    BoxConstraints constraints) {
+  TableElement table,
+  Map<StyledElement, InlineSpan> parsedCells,
+  ExtensionContext context,
+  BoxConstraints constraints,
+) {
   final rows = <TableRowLayoutElement>[];
   List<TrackSize> columnSizes = <TrackSize>[];
   for (var child in table.tableStructure) {
@@ -182,8 +183,9 @@ Widget _layoutCells(
                   // In a horizontally unbounded container; always wrap content instead of applying flex
                   return const IntrinsicContentTrackSize();
                 }
-                final percentageSize =
-                    double.tryParse(colWidth.substring(0, colWidth.length - 1));
+                final percentageSize = double.tryParse(
+                  colWidth.substring(0, colWidth.length - 1),
+                );
                 return percentageSize != null && !percentageSize.isNaN
                     ? FlexibleTrackSize(percentageSize / 100)
                     : const IntrinsicContentTrackSize();
@@ -216,16 +218,18 @@ Widget _layoutCells(
   int columnMax = 0;
   List<int> rowSpanOffsets = [];
   for (final row in rows) {
-    final cols = row.children
-            .whereType<TableCellElement>()
-            .fold(0, (int value, child) => value + child.colspan) +
+    final cols =
+        row.children.whereType<TableCellElement>().fold(
+          0,
+          (int value, child) => value + child.colspan,
+        ) +
         rowSpanOffsets.fold<int>(0, (int offset, child) => child);
     columnMax = max(cols, columnMax);
     rowSpanOffsets = [
       ...rowSpanOffsets.map((value) => value - 1).where((value) => value > 0),
-      ...row.children
-          .whereType<TableCellElement>()
-          .map((cell) => cell.rowspan - 1),
+      ...row.children.whereType<TableCellElement>().map(
+        (cell) => cell.rowspan - 1,
+      ),
     ];
   }
 
@@ -243,36 +247,41 @@ Widget _layoutCells(
       if (child is TableCellElement) {
         while (columnRowOffset[columni] > 0) {
           columnRowOffset[columni] = columnRowOffset[columni] - 1;
-          columni +=
-              columnColspanOffset[columni].clamp(1, columnMax - columni - 1);
+          columni += columnColspanOffset[columni].clamp(
+            1,
+            columnMax - columni - 1,
+          );
         }
 
         final colspan = min(child.colspan, columnMax - columni);
         final rowspan = min(child.rowspan, rows.length - rowi);
 
-        cells.add(GridPlacement(
-          columnStart: columni,
-          columnSpan: colspan,
-          rowStart: rowi,
-          rowSpan: rowspan,
-          child: CssBoxWidget(
-            style: child.style.merge(row.style),
-            child: SizedBox.expand(
-              child: Container(
-                alignment: _getCellAlignment(
+        cells.add(
+          GridPlacement(
+            columnStart: columni,
+            columnSpan: colspan,
+            rowStart: rowi,
+            rowSpan: rowspan,
+            child: CssBoxWidget(
+              style: child.style.merge(row.style),
+              child: SizedBox.expand(
+                child: Container(
+                  alignment: _getCellAlignment(
                     child,
                     child.style.direction ??
-                        Directionality.of(context.buildContext!)),
-                child: CssBoxWidget.withInlineSpanChildren(
-                  children: [
-                    parsedCells[child] ?? const TextSpan(text: "error")
-                  ],
-                  style: Style(),
+                        Directionality.of(context.buildContext!),
+                  ),
+                  child: CssBoxWidget.withInlineSpanChildren(
+                    children: [
+                      parsedCells[child] ?? const TextSpan(text: "error"),
+                    ],
+                    style: Style(),
+                  ),
                 ),
               ),
             ),
           ),
-        ));
+        );
         columnRowOffset[columni] = child.rowspan - 1;
         columnColspanOffset[columni] = child.colspan;
         columni += child.colspan;
@@ -287,8 +296,10 @@ Widget _layoutCells(
 
   // Create column tracks (insofar there were no colgroups that already defined them)
   List<TrackSize> finalColumnSizes = columnSizes.take(columnMax).toList();
-  finalColumnSizes += List.generate(max(0, columnMax - finalColumnSizes.length),
-      (_) => const IntrinsicContentTrackSize());
+  finalColumnSizes += List.generate(
+    max(0, columnMax - finalColumnSizes.length),
+    (_) => const IntrinsicContentTrackSize(),
+  );
 
   if (finalColumnSizes.isEmpty || rowSizes.isEmpty) {
     // No actual cells to show

@@ -49,8 +49,10 @@ class ImageExtension extends ImageBuiltIn {
     super.handleNetworkImages = true,
     InlineSpan? child,
     InlineSpan Function(ExtensionContext)? builder,
-  }) : assert((child != null) || (builder != null),
-            "Either child or builder needs to be provided to ImageExtension.inline") {
+  }) : assert(
+         (child != null) || (builder != null),
+         "Either child or builder needs to be provided to ImageExtension.inline",
+       ) {
     if (child != null) {
       this.builder = (_) => child;
     } else {

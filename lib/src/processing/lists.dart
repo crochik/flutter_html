@@ -19,14 +19,12 @@ class ListProcessing {
 
     if (tree.style.display == Display.listItem) {
       // Add the marker pseudo-element if it doesn't exist
-      tree.style.marker ??= Marker(
-        content: Content.normal,
-        style: tree.style,
-      );
+      tree.style.marker ??= Marker(content: Content.normal, style: tree.style);
 
       // Inherit styles from originating widget
-      tree.style.marker!.style =
-          tree.style.copyOnlyInherited(tree.style.marker!.style ?? Style());
+      tree.style.marker!.style = tree.style.copyOnlyInherited(
+        tree.style.marker!.style ?? Style(),
+      );
 
       // Add the implicit counter-increment on `list-item` if it isn't set
       // explicitly already
@@ -53,8 +51,10 @@ class ListProcessing {
 
   /// [_processListCounters] adds the appropriate counter values to each
   /// StyledElement on the tree.
-  static StyledElement _processListCounters(StyledElement tree,
-      [ListQueue<Counter>? counters]) {
+  static StyledElement _processListCounters(
+    StyledElement tree, [
+    ListQueue<Counter>? counters,
+  ]) {
     // Add the counters for the current scope.
     tree.counters.addAll(counters?.deepCopy() ?? []);
 
@@ -69,18 +69,14 @@ class ListProcessing {
     if (tree.style.counterIncrement != null) {
       tree.style.counterIncrement!.forEach((counterName, increment) {
         tree.counters
-            .lastWhereOrNull(
-              (counter) => counter.name == counterName,
-            )
+            .lastWhereOrNull((counter) => counter.name == counterName)
             ?.increment(increment ?? 1);
 
         // If we didn't newly create the counter, increment the counter in the old copy as well.
         if (tree.style.counterReset == null ||
             !tree.style.counterReset!.containsKey(counterName)) {
           counters
-              ?.lastWhereOrNull(
-                (counter) => counter.name == counterName,
-              )
+              ?.lastWhereOrNull((counter) => counter.name == counterName)
               ?.increment(increment ?? 1);
         }
       });
@@ -109,7 +105,8 @@ class ListProcessing {
       } else if (!(tree.style.marker?.content.display ?? true)) {
         counterContent = '';
       } else {
-        counterContent = tree.style.marker?.content.replacementContent ??
+        counterContent =
+            tree.style.marker?.content.replacementContent ??
             counterStyle.generateMarkerContent(
               tree.counters.lastOrNull?.value ?? 0,
             );

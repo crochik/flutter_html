@@ -11,9 +11,7 @@ import 'iframe_unsupported.dart'
 class IframeHtmlExtension extends HtmlExtension {
   final NavigationDelegate? navigationDelegate;
 
-  const IframeHtmlExtension({
-    this.navigationDelegate,
-  });
+  const IframeHtmlExtension({this.navigationDelegate});
 
   @override
   Set<String> get supportedTags => {"iframe"};

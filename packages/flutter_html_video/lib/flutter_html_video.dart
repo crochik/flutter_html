@@ -13,9 +13,7 @@ import 'dart:io';
 class VideoHtmlExtension extends HtmlExtension {
   final VideoControllerCallback? videoControllerCallback;
 
-  const VideoHtmlExtension({
-    this.videoControllerCallback,
-  });
+  const VideoHtmlExtension({this.videoControllerCallback});
 
   @override
   Set<String> get supportedTags => {"video"};
@@ -23,15 +21,13 @@ class VideoHtmlExtension extends HtmlExtension {
   @override
   InlineSpan build(ExtensionContext context) {
     return WidgetSpan(
-        child: VideoWidget(
-      context: context,
-      callback: videoControllerCallback,
-    ));
+      child: VideoWidget(context: context, callback: videoControllerCallback),
+    );
   }
 }
 
-typedef VideoControllerCallback = void Function(
-    dom.Element?, ChewieController, VideoPlayerController);
+typedef VideoControllerCallback =
+    void Function(dom.Element?, ChewieController, VideoPlayerController);
 
 /// A VideoWidget for displaying within the HTML tree.
 class VideoWidget extends StatefulWidget {
@@ -79,8 +75,9 @@ class _VideoWidgetState extends State<VideoWidget> {
           _videoController = VideoPlayerController.asset(sourceUri.path);
           break;
         case 'file':
-          _videoController =
-              VideoPlayerController.file(File.fromUri(sourceUri));
+          _videoController = VideoPlayerController.file(
+            File.fromUri(sourceUri),
+          );
           break;
         default:
           _videoController = VideoPlayerController.networkUrl(sourceUri);
@@ -90,14 +87,15 @@ class _VideoWidgetState extends State<VideoWidget> {
         videoPlayerController: _videoController!,
         placeholder:
             attributes['poster'] != null && attributes['poster']!.isNotEmpty
-                ? Image.network(attributes['poster']!)
-                : Container(color: Colors.black),
+            ? Image.network(attributes['poster']!)
+            : Container(color: Colors.black),
         autoPlay: attributes['autoplay'] != null,
         looping: attributes['loop'] != null,
         showControls: attributes['controls'] != null,
         autoInitialize: true,
-        aspectRatio:
-            _width == null || _height == null ? null : _width! / _height!,
+        aspectRatio: _width == null || _height == null
+            ? null
+            : _width! / _height!,
         deviceOrientationsOnEnterFullScreen:
             widget.deviceOrientationsOnEnterFullScreen,
         deviceOrientationsAfterFullScreen:
@@ -127,9 +125,7 @@ class _VideoWidgetState extends State<VideoWidget> {
 
     return AspectRatio(
       aspectRatio: _width! / _height!,
-      child: Chewie(
-        controller: _chewieController!,
-      ),
+      child: Chewie(controller: _chewieController!),
     );
   }
 }

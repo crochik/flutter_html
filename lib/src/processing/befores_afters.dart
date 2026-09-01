@@ -23,14 +23,16 @@ class BeforesAftersProcessing {
       );
     }
     if (tree.style.after != null) {
-      tree.children.add(TextContentElement(
-        text: tree.style.after,
-        style: tree.style.copyWith(
-          beforeAfterNull: true,
-          display: Display.inline,
+      tree.children.add(
+        TextContentElement(
+          text: tree.style.after,
+          style: tree.style.copyWith(
+            beforeAfterNull: true,
+            display: Display.inline,
+          ),
+          node: tree.node, // TODO should we really just copy this from parent?
         ),
-        node: tree.node, // TODO should we really just copy this from parent?
-      ));
+      );
     }
 
     tree.children.forEach(_processBeforesAndAfters);
