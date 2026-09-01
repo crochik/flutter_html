@@ -92,8 +92,10 @@ class ImageBuiltIn extends HtmlExtension {
     }
 
     return WidgetSpan(
-      alignment: context.style!.verticalAlign.toPlaceholderAlignment(
-        context.style!.display,
+      alignment: _replacedAlignment(
+        context.style!.verticalAlign.toPlaceholderAlignment(
+          context.style!.display,
+        ),
       ),
       baseline: TextBaseline.alphabetic,
       child: CssBoxWidget(
@@ -227,4 +229,19 @@ extension _SetFolding on String {
     }
     return false;
   }
+}
+
+/// Images are replaced content, which CSS aligns by its bottom margin edge
+/// rather than by a text baseline, so [PlaceholderAlignment.baseline] is not
+/// meaningful for them.
+///
+/// Requesting it is also actively harmful: Flutter's [RenderImage] does not
+/// implement `computeDryBaseline`, and its default implementation throws. Any
+/// intrinsically-sized layout around a baseline-aligned image therefore brings
+/// down the render tree in debug builds -- `<img>` inside `<table>` being the
+/// common case, since table layout sizes its rows intrinsically.
+PlaceholderAlignment _replacedAlignment(PlaceholderAlignment alignment) {
+  return alignment == PlaceholderAlignment.baseline
+      ? PlaceholderAlignment.bottom
+      : alignment;
 }
